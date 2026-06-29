@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS3_ps_Camera_Advance" Comment="Composite FB wrapping other FBs" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="PS_Transformer_for_Unknown" Date="2025-08-24">
+	</VersionInfo>
+	<CompilerInfo>
+	</CompilerInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="INIT" Type="Event" Comment="Initialization Request" >
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="INITO" Type="Event" Comment="Initialization Confirm" >
+				<With Var="Status"/>
+			</Event>
+			<Event Name="DONE" Type="Event" Comment="Execution Confirmation" >
+				<With Var="Status"/>
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="ID_SUB_NEXT_PROD" Type="WSTRING"/>
+			<VarDeclaration Name="ID_SUB_NEXT_LID" Type="WSTRING"/>
+			<VarDeclaration Name="ID_SUB_LID_FEEDER_DONE" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_FLIP_LID" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_MORE_LID" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_PLACE_LID" Type="WSTRING"/>
+		</InputVars>
+		<OutputVars>
+			<VarDeclaration Name="Status" Type="WSTRING" Comment="Output event qualifier" />
+		</OutputVars>
+	</InterfaceList>
+	<FBNetwork>
+		<FB Name="SS3_Camera_Advance_Instance" Type="SS3_Camera_Advance" x="1700" y="700">
+		</FB>
+		<FB Name="SUBSCRIBE_NEXT_PROD" Type="SUBSCRIBE_0" x="500" y="100">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="SUBSCRIBE_NEXT_LID" Type="SUBSCRIBE_0" x="1700" y="100">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="SUBSCRIBE_LID_FEEDER_DONE" Type="SUBSCRIBE_0" x="2900" y="100">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_FLIP_LID" Type="PUBLISH_0" x="500" y="1300">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_MORE_LID" Type="PUBLISH_0" x="1700" y="1300">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_PLACE_LID" Type="PUBLISH_3" x="2900" y="1300">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<EventConnections>
+			<Connection Source="INIT" Destination="SUBSCRIBE_NEXT_PROD.INIT" dx1="300"/>
+			<Connection Source="SUBSCRIBE_NEXT_PROD.INITO" Destination="SUBSCRIBE_NEXT_LID.INIT" dx1="300"/>
+			<Connection Source="SUBSCRIBE_NEXT_LID.INITO" Destination="SUBSCRIBE_LID_FEEDER_DONE.INIT" dx1="300"/>
+			<Connection Source="SUBSCRIBE_LID_FEEDER_DONE.INITO" Destination="PUBLISH_FLIP_LID.INIT" dx1="300"/>
+			<Connection Source="PUBLISH_FLIP_LID.INITO" Destination="PUBLISH_MORE_LID.INIT" dx1="300"/>
+			<Connection Source="PUBLISH_MORE_LID.INITO" Destination="PUBLISH_PLACE_LID.INIT" dx1="300"/>
+			<Connection Source="PUBLISH_PLACE_LID.INITO" Destination="INITO" dx1="300"/>
+			<Connection Source="SUBSCRIBE_NEXT_PROD.IND" Destination="SS3_Camera_Advance_Instance.NEXT_PROD" dx1="300"/>
+			<Connection Source="SUBSCRIBE_NEXT_LID.IND" Destination="SS3_Camera_Advance_Instance.NEXT_LID" dx1="300"/>
+			<Connection Source="SUBSCRIBE_LID_FEEDER_DONE.IND" Destination="SS3_Camera_Advance_Instance.LID_FEEDER_DONE" dx1="300"/>
+			<Connection Source="SS3_Camera_Advance_Instance.FLIP_LID" Destination="PUBLISH_FLIP_LID.REQ" dx1="300"/>
+			<Connection Source="SS3_Camera_Advance_Instance.MORE_LID" Destination="PUBLISH_MORE_LID.REQ" dx1="300"/>
+			<Connection Source="SS3_Camera_Advance_Instance.PLACE_LID" Destination="PUBLISH_PLACE_LID.REQ" dx1="300"/>
+			<Connection Source="PUBLISH_FLIP_LID.CNF" Destination="DONE" dx1="300"/>
+			<Connection Source="PUBLISH_MORE_LID.CNF" Destination="DONE" dx1="300"/>
+			<Connection Source="PUBLISH_PLACE_LID.CNF" Destination="DONE" dx1="300"/>
+		</EventConnections>
+		<DataConnections>
+			<Connection Source="ID_SUB_NEXT_PROD" Destination="SUBSCRIBE_NEXT_PROD.ID" dx1="300"/>
+			<Connection Source="ID_SUB_NEXT_LID" Destination="SUBSCRIBE_NEXT_LID.ID" dx1="300"/>
+			<Connection Source="ID_SUB_LID_FEEDER_DONE" Destination="SUBSCRIBE_LID_FEEDER_DONE.ID" dx1="300"/>
+			<Connection Source="ID_PUB_FLIP_LID" Destination="PUBLISH_FLIP_LID.ID" dx1="300"/>
+			<Connection Source="ID_PUB_MORE_LID" Destination="PUBLISH_MORE_LID.ID" dx1="300"/>
+			<Connection Source="ID_PUB_PLACE_LID" Destination="PUBLISH_PLACE_LID.ID" dx1="300"/>
+			<Connection Source="SS3_Camera_Advance_Instance.pos_X" Destination="PUBLISH_PLACE_LID.SD_1" dx1="300"/>
+			<Connection Source="SS3_Camera_Advance_Instance.pos_Y" Destination="PUBLISH_PLACE_LID.SD_2" dx1="300"/>
+			<Connection Source="SS3_Camera_Advance_Instance.pos_Z" Destination="PUBLISH_PLACE_LID.SD_3" dx1="300"/>
+		</DataConnections>
+	</FBNetwork>
+</FBType>

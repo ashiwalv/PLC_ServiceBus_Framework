@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS5a_ps_AirNozzle" Comment="Composite FB wrapping other FBs" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="PS_Transformer_for_Unknown" Date="2025-08-26">
+	</VersionInfo>
+	<CompilerInfo>
+	</CompilerInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="INIT" Type="Event" Comment="Initialization Request" >
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="INITO" Type="Event" Comment="Initialization Confirm" >
+				<With Var="Status"/>
+			</Event>
+			<Event Name="DONE" Type="Event" Comment="Execution Confirmation" >
+				<With Var="Status"/>
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="ID_SUB_START" Type="WSTRING"/>
+			<VarDeclaration Name="ID_SUB_STOP" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_DONE" Type="WSTRING"/>
+		</InputVars>
+		<OutputVars>
+			<VarDeclaration Name="Status" Type="WSTRING" Comment="Output event qualifier" />
+		</OutputVars>
+	</InterfaceList>
+	<FBNetwork>
+		<FB Name="SS5a_AirNozzle_Instance" Type="SS5a_AirNozzle" x="1100" y="700">
+		</FB>
+		<FB Name="SUBSCRIBE_START" Type="SUBSCRIBE_0" x="500" y="100">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="SUBSCRIBE_STOP" Type="SUBSCRIBE_0" x="1700" y="100">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_DONE" Type="PUBLISH_0" x="500" y="1300">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<EventConnections>
+			<Connection Source="INIT" Destination="SUBSCRIBE_START.INIT" dx1="300"/>
+			<Connection Source="SUBSCRIBE_START.INITO" Destination="SUBSCRIBE_STOP.INIT" dx1="300"/>
+			<Connection Source="SUBSCRIBE_STOP.INITO" Destination="PUBLISH_DONE.INIT" dx1="300"/>
+			<Connection Source="PUBLISH_DONE.INITO" Destination="INITO" dx1="300"/>
+			<Connection Source="SUBSCRIBE_START.IND" Destination="SS5a_AirNozzle_Instance.START" dx1="300"/>
+			<Connection Source="SUBSCRIBE_STOP.IND" Destination="SS5a_AirNozzle_Instance.STOP" dx1="300"/>
+			<Connection Source="SS5a_AirNozzle_Instance.DONE" Destination="PUBLISH_DONE.REQ" dx1="300"/>
+			<Connection Source="PUBLISH_DONE.CNF" Destination="DONE" dx1="300"/>
+		</EventConnections>
+		<DataConnections>
+			<Connection Source="ID_SUB_START" Destination="SUBSCRIBE_START.ID" dx1="300"/>
+			<Connection Source="ID_SUB_STOP" Destination="SUBSCRIBE_STOP.ID" dx1="300"/>
+			<Connection Source="ID_PUB_DONE" Destination="PUBLISH_DONE.ID" dx1="300"/>
+		</DataConnections>
+	</FBNetwork>
+</FBType>

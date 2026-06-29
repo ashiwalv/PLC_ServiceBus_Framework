@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS3_ps_PnP" Comment="Composite FB wrapping other FBs" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="PS_Transformer_for_Unknown" Date="2025-08-24">
+	</VersionInfo>
+	<CompilerInfo>
+	</CompilerInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="INIT" Type="Event" Comment="Initialization Request" >
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="INITO" Type="Event" Comment="Initialization Confirm" >
+				<With Var="Status"/>
+			</Event>
+			<Event Name="DONE" Type="Event" Comment="Execution Confirmation" >
+				<With Var="Status"/>
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="ID_SUB_PLACE_LID" Type="WSTRING"/>
+			<VarDeclaration Name="ID_SUB_BASE_FLIPPED" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_NEXT_LID" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_FLIP_BASE" Type="WSTRING"/>
+		</InputVars>
+		<OutputVars>
+			<VarDeclaration Name="Status" Type="WSTRING" Comment="Output event qualifier" />
+		</OutputVars>
+	</InterfaceList>
+	<FBNetwork>
+		<FB Name="SS3_PnP_Instance" Type="SS3_PnP" x="1100" y="700">
+		</FB>
+		<FB Name="SUBSCRIBE_PLACE_LID" Type="SUBSCRIBE_3" x="500" y="100">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="SUBSCRIBE_BASE_FLIPPED" Type="SUBSCRIBE_0" x="1700" y="100">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_NEXT_LID" Type="PUBLISH_0" x="500" y="1300">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_FLIP_BASE" Type="PUBLISH_0" x="1700" y="1300">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<EventConnections>
+			<Connection Source="INIT" Destination="SUBSCRIBE_PLACE_LID.INIT" dx1="300"/>
+			<Connection Source="SUBSCRIBE_PLACE_LID.INITO" Destination="SUBSCRIBE_BASE_FLIPPED.INIT" dx1="300"/>
+			<Connection Source="SUBSCRIBE_BASE_FLIPPED.INITO" Destination="PUBLISH_NEXT_LID.INIT" dx1="300"/>
+			<Connection Source="PUBLISH_NEXT_LID.INITO" Destination="PUBLISH_FLIP_BASE.INIT" dx1="300"/>
+			<Connection Source="PUBLISH_FLIP_BASE.INITO" Destination="INITO" dx1="300"/>
+			<Connection Source="SUBSCRIBE_PLACE_LID.IND" Destination="SS3_PnP_Instance.PLACE_LID" dx1="300"/>
+			<Connection Source="SUBSCRIBE_BASE_FLIPPED.IND" Destination="SS3_PnP_Instance.BASE_FLIPPED" dx1="300"/>
+			<Connection Source="SS3_PnP_Instance.NEXT_LID" Destination="PUBLISH_NEXT_LID.REQ" dx1="300"/>
+			<Connection Source="SS3_PnP_Instance.FLIP_BASE" Destination="PUBLISH_FLIP_BASE.REQ" dx1="300"/>
+			<Connection Source="PUBLISH_NEXT_LID.CNF" Destination="DONE" dx1="300"/>
+			<Connection Source="PUBLISH_FLIP_BASE.CNF" Destination="DONE" dx1="300"/>
+		</EventConnections>
+		<DataConnections>
+			<Connection Source="ID_SUB_PLACE_LID" Destination="SUBSCRIBE_PLACE_LID.ID" dx1="300"/>
+			<Connection Source="ID_SUB_BASE_FLIPPED" Destination="SUBSCRIBE_BASE_FLIPPED.ID" dx1="300"/>
+			<Connection Source="ID_PUB_NEXT_LID" Destination="PUBLISH_NEXT_LID.ID" dx1="300"/>
+			<Connection Source="ID_PUB_FLIP_BASE" Destination="PUBLISH_FLIP_BASE.ID" dx1="300"/>
+			<Connection Source="SUBSCRIBE_PLACE_LID.RD_1" Destination="SS3_PnP_Instance.pos_x" dx1="300"/>
+			<Connection Source="SUBSCRIBE_PLACE_LID.RD_2" Destination="SS3_PnP_Instance.pos_y" dx1="300"/>
+			<Connection Source="SUBSCRIBE_PLACE_LID.RD_3" Destination="SS3_PnP_Instance.pos_z" dx1="300"/>
+		</DataConnections>
+	</FBNetwork>
+</FBType>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS4_ifb_Raiser_n_Flipper" Comment="Basic FB with empty ECC" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="AK121668" Date="2021-08-23">
+	</VersionInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="NEXT_PRODUCT" Type="Event">
+			</Event>
+			<Event Name="PRINTING_DONE" Type="Event">
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="PRINT" Type="Event">
+				<With Var="Status"/>
+			</Event>
+			<Event Name="LABELLING_DONE" Type="Event">
+				<With Var="Status"/>
+			</Event>
+		</EventOutputs>
+		<OutputVars>
+			<VarDeclaration Name="Status" Type="WSTRING"/>
+		</OutputVars>
+	</InterfaceList>
+	<BasicFB>
+		<ECC>
+			<ECState Name="START" Comment="Initial State"  x="546.67" y="420">
+			</ECState>
+			<ECState Name="s_Move" x="2046.67" y="340">
+				<ECAction Algorithm="alg_move_init"/>
+				<ECAction Algorithm="alg_move" Output="PRINT"/>
+			</ECState>
+			<ECState Name="s_Move_done" x="1466.67" y="1600">
+				<ECAction Algorithm="alg_move_Done" Output="LABELLING_DONE"/>
+			</ECState>
+			<ECTransition Source="s_Move_done" Destination="START" Condition="1" Comment="" x="960" y="1313.33"/>
+			<ECTransition Source="START" Destination="s_Move" Condition="NEXT_PRODUCT" Comment="" x="1460" y="460"/>
+			<ECTransition Source="s_Move" Destination="s_Move_done" Condition="PRINTING_DONE" Comment="" x="2260" y="813.33"/>
+		</ECC>
+		<Algorithm Name="alg_move_init">
+			<ST><![CDATA[ALGORITHM alg_move_init
+
+END_ALGORITHM]]></ST>
+		</Algorithm>
+		<Algorithm Name="alg_move">
+			<ST><![CDATA[
+
+ALGORITHM alg_move
+Status := "Lasering Start";
+END_ALGORITHM]]></ST>
+		</Algorithm>
+		<Algorithm Name="alg_move_Done">
+			<ST><![CDATA[
+
+ALGORITHM alg_move_Done
+Status := "Lasering DONE";
+END_ALGORITHM
+
+]]></ST>
+		</Algorithm>
+	</BasicFB>
+</FBType>

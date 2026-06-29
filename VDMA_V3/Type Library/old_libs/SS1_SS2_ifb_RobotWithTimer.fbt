@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS1_SS2_ifb_RobotWithTimer" Comment="Composite FB wrapping other FBs" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="DEVIASH" Date="2024-08-30">
+	</VersionInfo>
+	<CompilerInfo>
+	</CompilerInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="WP_READY" Type="Event" Comment="Initialization Request" >
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="WP_PLACED" Type="Event" Comment="Initialization Confirm" >
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="Pick_X" Type="REAL"/>
+			<VarDeclaration Name="Pick_Y" Type="REAL"/>
+			<VarDeclaration Name="Pick_Z" Type="REAL"/>
+			<VarDeclaration Name="Destination_X" Type="REAL"/>
+			<VarDeclaration Name="Destination_Y" Type="REAL"/>
+			<VarDeclaration Name="Destination_Z" Type="REAL"/>
+		</InputVars>
+	</InterfaceList>
+	<FBNetwork>
+		<FB Name="SS1_Robot" Type="SS1_ifb_Robot" x="1600" y="1066.67">
+			<Parameter Name="Pick_X" Value="10.0"/>
+			<Parameter Name="Destination_X" Value="25.0"/>
+		</FB>
+		<FB Name="E_TimeOut" Type="E_TimeOut" x="3800" y="1420">
+		</FB>
+		<EventConnections>
+			<Connection Source="WP_READY" Destination="SS1_Robot.WPs_READY" dx1="2500"/>
+			<Connection Source="SS1_Robot.WPs_PLACED" Destination="WP_PLACED" dx1="3046.67"/>
+		</EventConnections>
+		<DataConnections>
+			<Connection Source="Pick_X" Destination="SS1_Robot.Pick_X" dx1="2500"/>
+			<Connection Source="Pick_Y" Destination="SS1_Robot.Pick_Y" dx1="3833.33"/>
+			<Connection Source="Pick_Z" Destination="SS1_Robot.Pick_Z" dx1="2500"/>
+			<Connection Source="Destination_X" Destination="SS1_Robot.Destination_X" dx1="2500"/>
+			<Connection Source="Destination_Y" Destination="SS1_Robot.Destination_Y" dx1="2500"/>
+			<Connection Source="Destination_Z" Destination="SS1_Robot.Destination_Z" dx1="2500"/>
+		</DataConnections>
+		<AdapterConnections>
+			<Connection Source="SS1_Robot.PLUG1" Destination="E_TimeOut.TimeOutSocket" dx1="593.33"/>
+		</AdapterConnections>
+	</FBNetwork>
+</FBType>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalConstants Name="IDs" Comment="Global constants" >
+	<Identification Standard="61499-1">
+	</Identification>
+	<VersionInfo Version="1.0" Author="DEVIASH" Date="2025-07-24">
+	</VersionInfo>
+	<CompilerInfo>
+	</CompilerInfo>
+	<GlobalConstants>
+		<VarDeclaration Name="ID1" Type="WSTRING" InitialValue="&quot;topic1&quot;"/>
+	</GlobalConstants>
+	<OriginalSource><![CDATA[GLOBALCONSTANTS IDs
+	VAR_GLOBAL CONSTANT
+		ID1 : WSTRING := "topic1";
+	END_VAR
+END_GLOBALCONSTANTS
+]]></OriginalSource>
+</GlobalConstants>

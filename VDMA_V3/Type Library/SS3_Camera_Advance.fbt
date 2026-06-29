@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS3_Camera_Advance" Comment="Basic FB with empty ECC" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="DEVIASH" Date="2025-08-24">
+	</VersionInfo>
+	<CompilerInfo>
+	</CompilerInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="NEXT_PROD" Type="Event">
+			</Event>
+			<Event Name="NEXT_LID" Type="Event">
+			</Event>
+			<Event Name="LID_FEEDER_DONE" Type="Event">
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="FLIP_LID" Type="Event">
+			</Event>
+			<Event Name="MORE_LID" Type="Event">
+			</Event>
+			<Event Name="PLACE_LID" Type="Event">
+				<With Var="pos_X"/>
+				<With Var="pos_Y"/>
+				<With Var="pos_Z"/>
+			</Event>
+		</EventOutputs>
+		<OutputVars>
+			<VarDeclaration Name="pos_X" Type="REAL"/>
+			<VarDeclaration Name="pos_Y" Type="REAL"/>
+			<VarDeclaration Name="pos_Z" Type="REAL"/>
+		</OutputVars>
+	</InterfaceList>
+	<BasicFB>
+		<ECC>
+			<ECState Name="START" Comment="Initial State"  x="550" y="425">
+			</ECState>
+			<ECState Name="State" x="2126.67" y="533.33">
+			</ECState>
+			<ECTransition Source="START" Destination="State" Condition="1" Comment="" x="1493.33" y="526.67"/>
+			<ECTransition Source="State" Destination="START" Condition="1" Comment="" x="1553.33" y="586.67"/>
+		</ECC>
+	</BasicFB>
+</FBType>

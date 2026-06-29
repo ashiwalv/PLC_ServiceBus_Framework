@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS3_v_direct" Comment="Composite FB wrapping other FBs" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="DEVIASH" Date="2025-05-26">
+	</VersionInfo>
+	<CompilerInfo>
+	</CompilerInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="PRODUCT_ARRIVED" Type="Event" Comment="Initialization Request" >
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="DONE" Type="Event" Comment="Initialization Confirm" >
+			</Event>
+		</EventOutputs>
+	</InterfaceList>
+	<FBNetwork>
+		<FB Name="Camera" Type="SS3_ifb_Camera" x="1300" y="1240">
+		</FB>
+		<FB Name="Vaccume_Gripper" Type="SS3_ifb_Vaccume_Gripper" x="6573.33" y="2600">
+		</FB>
+		<FB Name="Bunker" Type="SS3_ifb_Bunker" x="5373.33" y="700">
+		</FB>
+		<FB Name="SS3_ifb_flipper" Type="SS3_ifb_flipper" x="7273.33" y="3300">
+		</FB>
+		<FB Name="Vibrator" Type="SS3_ifb_Vibrator" x="5373.33" y="1600">
+		</FB>
+		<FB Name="Axis" Type="SS3_ifb_Axis" x="3473.33" y="2300">
+		</FB>
+		<EventConnections>
+			<Connection Source="Camera.CAP_RECHANBLE" Destination="Axis.CAP_REACHABLE" dx1="793.33"/>
+			<Connection Source="Camera.CAP_NOT_REACHANBLE" Destination="Vibrator.CAP_NOT_REACHABLE" dx1="1360"/>
+			<Connection Source="Vaccume_Gripper.PICKED_CAP" Destination="Axis.PICKED_CAP" dx1="80" dx2="80" dy="-466.67"/>
+			<Connection Source="Vaccume_Gripper.RELEASED_CAP" Destination="Axis.RELEASED_CAP" dx1="80" dx2="80" dy="-700"/>
+			<Connection Source="Camera.WRONG_CAP_ORIENTATION" Destination="Vibrator.WRONG_CAP_ORIENTATION" dx1="1360"/>
+			<Connection Source="Axis.REACHED_PICKUP_POSITION" Destination="Vaccume_Gripper.Reached_Pickup_Position" dx1="473.33"/>
+			<Connection Source="Vibrator.CAPS_AVAILABLE" Destination="Camera.RUN_AGAIN" dx1="80" dx2="80" dy="-1253.33"/>
+			<Connection Source="Axis.REACHED_DROP_POSITION" Destination="Vaccume_Gripper.REACHED_DROP_POSITION" dx1="473.33"/>
+			<Connection Source="Axis.CAPPED_SPINNER" Destination="Camera.DONE" dx1="80" dx2="80" dy="-1626.67"/>
+			<Connection Source="Camera.DESIRED_COLOR_CAP_NOT_AVAILABLE" Destination="Bunker.START_BUNKER" dx1="1360"/>
+			<Connection Source="Bunker.MORE_CAPS_AVAILABLE" Destination="Camera.RUN_AGAIN" dx1="80" dx2="80" dy="-193.33"/>
+			<Connection Source="Axis.REACHED_DROP_POSITION" Destination="Camera.NEXT_LID" dx1="80" dx2="80" dy="-1780"/>
+			<Connection Source="Axis.FLIP_REQUIRED" Destination="SS3_ifb_flipper.FLIP_BASE" dx1="1033.33"/>
+			<Connection Source="SS3_ifb_flipper.BASE_FLIPPED" Destination="Axis.RELEASED_CAP" dx1="80" dx2="80" dy="266.67"/>
+			<Connection Source="PRODUCT_ARRIVED" Destination="Camera.CAP_REQUIRED" dx1="2346.67"/>
+			<Connection Source="Axis.CAPPED_SPINNER" Destination="DONE" dx1="4613.33"/>
+		</EventConnections>
+		<DataConnections>
+			<Connection Source="Camera.Pick_Pos_Z" Destination="Axis.Pos_Z" dx1="793.33"/>
+			<Connection Source="Camera.Pick_Pos_Y" Destination="Axis.Pos_Y" dx1="793.33"/>
+			<Connection Source="Camera.Pick_Pos_X" Destination="Axis.Pos_X" dx1="793.33"/>
+		</DataConnections>
+	</FBNetwork>
+</FBType>

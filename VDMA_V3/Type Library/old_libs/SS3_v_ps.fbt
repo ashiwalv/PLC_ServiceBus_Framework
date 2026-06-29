@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS3_v_ps" Comment="Composite FB wrapping other FBs" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="DEVIASH" Date="2025-05-16">
+	</VersionInfo>
+	<CompilerInfo>
+	</CompilerInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="PRODUCT_ARRIVED" Type="Event">
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="DONE" Type="Event">
+			</Event>
+		</EventOutputs>
+	</InterfaceList>
+	<FBNetwork>
+		<FB Name="SS3_ifb_ps_Camera" Type="SS3_ifb_Camera_ps" x="-100" y="-700">
+			<Parameter Name="ID_SUB_RUN_AGAIN" Value="&quot;225.0.0.2:61500&quot;"/>
+			<Parameter Name="ID_SUB_NEXT_LID" Value="&quot;225.0.0.8:61500&quot;"/>
+			<Parameter Name="ID_SUB_DONE" Value="&quot;225.0.0.11:61500&quot;"/>
+			<Parameter Name="ID_PUB_DESIRED_COLOR_CAP_NOT_AVAILABLE" Value="&quot;225.0.0.1:61500&quot;"/>
+			<Parameter Name="ID_PUB_WRONG_CAP_ORIENTATION" Value="&quot;225.0.0.3:61500&quot;"/>
+			<Parameter Name="ID_PUB_CAP_NOT_REACHANBLE" Value="&quot;225.0.0.4:61500&quot;"/>
+			<Parameter Name="ID_PUB_CAP_RECHANBLE" Value="&quot;225.0.0.5:61500&quot;"/>
+		</FB>
+		<FB Name="SS3_ifb_ps_Vaccume_Gripper" Type="SS3_ifb_ps_Vaccume_Gripper" x="4300" y="700">
+			<Parameter Name="ID_SUB_Reached_Pickup_Position" Value="&quot;225.0.0.6:61500&quot;"/>
+			<Parameter Name="ID_SUB_REACHED_DROP_POSITION" Value="&quot;225.0.0.8:61500&quot;"/>
+			<Parameter Name="ID_PUB_PICKED_CAP" Value="&quot;225.0.0.7:61500&quot;"/>
+			<Parameter Name="ID_PUB_RELEASED_CAP" Value="&quot;225.0.0.9:61500&quot;"/>
+		</FB>
+		<FB Name="SS3_ifb_ps_Vibrator" Type="SS3_ifb_ps_Vibrator" x="4600" y="-500">
+			<Parameter Name="ID_SUB_WRONG_CAP_ORIENTATION" Value="&quot;225.0.0.3:61500&quot;"/>
+			<Parameter Name="ID_SUB_CAP_NOT_REACHABLE" Value="&quot;225.0.0.4:61500&quot;"/>
+			<Parameter Name="ID_PUB_CAPS_AVAILABLE" Value="&quot;225.0.0.2:61500&quot;"/>
+		</FB>
+		<FB Name="SS3_ifb_ps_flipper" Type="SS3_ifb_ps_flipper" x="2100" y="2000">
+			<Parameter Name="ID_SUB_FLIP_BASE" Value="&quot;225.0.0.10:61500&quot;"/>
+			<Parameter Name="ID_PUB_BASE_FLIPPED" Value="&quot;225.0.0.9:61500&quot;"/>
+		</FB>
+		<FB Name="SS3_ifb_Bunker_ps" Type="SS3_ifb_Bunker_ps" x="2500" y="-500">
+			<Parameter Name="ID_SUB_START_BUNKER" Value="&quot;225.0.0.1:61500&quot;"/>
+			<Parameter Name="ID_PUB_MORE_CAPS_AVAILABLE" Value="&quot;225.0.0.2:61500&quot;"/>
+		</FB>
+		<FB Name="SS3_ifb_ps_Axis" Type="SS3_ifb_ps_Axis" x="2100" y="700">
+			<Parameter Name="ID_SUB_CAP_REACHABLE" Value="&quot;225.0.0.5:61500&quot;"/>
+			<Parameter Name="ID_SUB_PICKED_CAP" Value="&quot;225.0.0.7:61500&quot;"/>
+			<Parameter Name="ID_SUB_RELEASED_CAP" Value="&quot;225.0.0.9:61500&quot;"/>
+			<Parameter Name="ID_PUB_REACHED_PICKUP_POSITION" Value="&quot;225.0.0.6:61500&quot;"/>
+			<Parameter Name="ID_PUB_REACHED_DROP_POSITION" Value="&quot;225.0.0.8:61500&quot;"/>
+			<Parameter Name="ID_PUB_CAPPED_SPINNER" Value="&quot;225.0.0.11:61500&quot;"/>
+			<Parameter Name="ID_PUB_FLIP_REQUIRED" Value="&quot;225.0.0.10:61500&quot;"/>
+		</FB>
+	</FBNetwork>
+</FBType>

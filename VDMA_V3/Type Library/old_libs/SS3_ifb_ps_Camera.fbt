@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS3_ifb_ps_Camera" Comment="Composite FB wrapping other FBs" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="PS_Transformer_for_Unknown" Date="2025-05-26">
+	</VersionInfo>
+	<CompilerInfo>
+	</CompilerInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="INIT" Type="Event" Comment="Initialization Request" >
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="INITO" Type="Event" Comment="Initialization Confirm" >
+				<With Var="Status"/>
+			</Event>
+			<Event Name="DONE" Type="Event" Comment="Execution Confirmation" >
+				<With Var="Status"/>
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="ID_SUB_CAP_REQUIRED" Type="WSTRING"/>
+			<VarDeclaration Name="ID_SUB_RUN_AGAIN" Type="WSTRING"/>
+			<VarDeclaration Name="ID_SUB_NEXT_LID" Type="WSTRING"/>
+			<VarDeclaration Name="ID_SUB_DONE" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_DESIRED_COLOR_CAP_NOT_AVAILABLE" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_WRONG_CAP_ORIENTATION" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_CAP_NOT_REACHANBLE" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_CAP_RECHANBLE" Type="WSTRING"/>
+		</InputVars>
+		<OutputVars>
+			<VarDeclaration Name="Status" Type="WSTRING" Comment="Output event qualifier" />
+		</OutputVars>
+	</InterfaceList>
+	<FBNetwork>
+		<FB Name="SS3_ifb_Camera_Instance" Type="SS3_ifb_Camera" x="2300" y="700">
+		</FB>
+		<FB Name="SUBSCRIBE_CAP_REQUIRED" Type="SUBSCRIBE_1" x="600" y="-700">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="SUBSCRIBE_RUN_AGAIN" Type="SUBSCRIBE_0" x="2100" y="-700">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="SUBSCRIBE_NEXT_LID" Type="SUBSCRIBE_0" x="3200" y="-700">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="SUBSCRIBE_DONE" Type="SUBSCRIBE_0" x="4400" y="-700">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_DESIRED_COLOR_CAP_NOT_AVAILABLE" Type="PUBLISH_0" x="-300" y="1400">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_WRONG_CAP_ORIENTATION" Type="PUBLISH_0" x="1700" y="1700">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_CAP_NOT_REACHANBLE" Type="PUBLISH_0" x="3100" y="1900">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_CAP_RECHANBLE" Type="PUBLISH_3" x="5200" y="1500">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<EventConnections>
+			<Connection Source="INIT" Destination="SUBSCRIBE_CAP_REQUIRED.INIT" dx1="300"/>
+			<Connection Source="SUBSCRIBE_CAP_REQUIRED.INITO" Destination="SUBSCRIBE_RUN_AGAIN.INIT"/>
+			<Connection Source="SUBSCRIBE_RUN_AGAIN.INITO" Destination="SUBSCRIBE_NEXT_LID.INIT"/>
+			<Connection Source="SUBSCRIBE_NEXT_LID.INITO" Destination="SUBSCRIBE_DONE.INIT"/>
+			<Connection Source="SUBSCRIBE_DONE.INITO" Destination="PUBLISH_DESIRED_COLOR_CAP_NOT_AVAILABLE.INIT" dx1="80" dx2="80" dy="1000"/>
+			<Connection Source="PUBLISH_DESIRED_COLOR_CAP_NOT_AVAILABLE.INITO" Destination="PUBLISH_WRONG_CAP_ORIENTATION.INIT" dx1="300"/>
+			<Connection Source="PUBLISH_WRONG_CAP_ORIENTATION.INITO" Destination="PUBLISH_CAP_NOT_REACHANBLE.INIT" dx1="300"/>
+			<Connection Source="PUBLISH_CAP_NOT_REACHANBLE.INITO" Destination="PUBLISH_CAP_RECHANBLE.INIT" dx1="106.67"/>
+			<Connection Source="PUBLISH_CAP_RECHANBLE.INITO" Destination="INITO" dx1="300"/>
+			<Connection Source="SUBSCRIBE_CAP_REQUIRED.IND" Destination="SS3_ifb_Camera_Instance.CAP_REQUIRED" dx1="300"/>
+			<Connection Source="SUBSCRIBE_RUN_AGAIN.IND" Destination="SS3_ifb_Camera_Instance.RUN_AGAIN" dx1="80" dx2="80" dy="700"/>
+			<Connection Source="SUBSCRIBE_NEXT_LID.IND" Destination="SS3_ifb_Camera_Instance.NEXT_LID" dx1="80" dx2="80" dy="746.67"/>
+			<Connection Source="SUBSCRIBE_DONE.IND" Destination="SS3_ifb_Camera_Instance.DONE" dx1="80" dx2="80" dy="800"/>
+			<Connection Source="SS3_ifb_Camera_Instance.DESIRED_COLOR_CAP_NOT_AVAILABLE" Destination="PUBLISH_DESIRED_COLOR_CAP_NOT_AVAILABLE.REQ" dx1="80" dx2="80" dy="400"/>
+			<Connection Source="SS3_ifb_Camera_Instance.WRONG_CAP_ORIENTATION" Destination="PUBLISH_WRONG_CAP_ORIENTATION.REQ" dx1="80" dx2="80" dy="500"/>
+			<Connection Source="SS3_ifb_Camera_Instance.CAP_NOT_REACHANBLE" Destination="PUBLISH_CAP_NOT_REACHANBLE.REQ" dx1="80" dx2="80" dy="546.67"/>
+			<Connection Source="SS3_ifb_Camera_Instance.CAP_RECHANBLE" Destination="PUBLISH_CAP_RECHANBLE.REQ" dx1="300"/>
+			<Connection Source="PUBLISH_DESIRED_COLOR_CAP_NOT_AVAILABLE.CNF" Destination="DONE" dx1="300"/>
+			<Connection Source="PUBLISH_WRONG_CAP_ORIENTATION.CNF" Destination="DONE" dx1="300"/>
+			<Connection Source="PUBLISH_CAP_NOT_REACHANBLE.CNF" Destination="DONE" dx1="300"/>
+			<Connection Source="PUBLISH_CAP_RECHANBLE.CNF" Destination="DONE" dx1="300"/>
+		</EventConnections>
+		<DataConnections>
+			<Connection Source="ID_SUB_CAP_REQUIRED" Destination="SUBSCRIBE_CAP_REQUIRED.ID" dx1="300"/>
+			<Connection Source="ID_SUB_RUN_AGAIN" Destination="SUBSCRIBE_RUN_AGAIN.ID" dx1="300"/>
+			<Connection Source="ID_SUB_NEXT_LID" Destination="SUBSCRIBE_NEXT_LID.ID" dx1="300"/>
+			<Connection Source="ID_SUB_DONE" Destination="SUBSCRIBE_DONE.ID" dx1="300"/>
+			<Connection Source="ID_PUB_DESIRED_COLOR_CAP_NOT_AVAILABLE" Destination="PUBLISH_DESIRED_COLOR_CAP_NOT_AVAILABLE.ID" dx1="300"/>
+			<Connection Source="ID_PUB_WRONG_CAP_ORIENTATION" Destination="PUBLISH_WRONG_CAP_ORIENTATION.ID" dx1="300"/>
+			<Connection Source="ID_PUB_CAP_NOT_REACHANBLE" Destination="PUBLISH_CAP_NOT_REACHANBLE.ID" dx1="300"/>
+			<Connection Source="ID_PUB_CAP_RECHANBLE" Destination="PUBLISH_CAP_RECHANBLE.ID" dx1="300"/>
+			<Connection Source="SUBSCRIBE_CAP_REQUIRED.RD_1" Destination="SS3_ifb_Camera_Instance.Product_Color" dx1="300"/>
+			<Connection Source="SS3_ifb_Camera_Instance.Pick_Pos_X" Destination="PUBLISH_CAP_RECHANBLE.SD_1" dx1="300"/>
+			<Connection Source="SS3_ifb_Camera_Instance.Pick_Pos_Y" Destination="PUBLISH_CAP_RECHANBLE.SD_2" dx1="300"/>
+			<Connection Source="SS3_ifb_Camera_Instance.Pick_Pos_Z" Destination="PUBLISH_CAP_RECHANBLE.SD_3" dx1="300"/>
+		</DataConnections>
+	</FBNetwork>
+</FBType>

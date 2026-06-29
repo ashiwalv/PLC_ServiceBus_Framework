@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS3_ifb_Axis" Comment="Basic FB with empty ECC" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="AK121668" Date="2021-08-23">
+	</VersionInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="CAP_REACHABLE" Type="Event">
+				<With Var="Pos_X"/>
+				<With Var="Pos_Y"/>
+				<With Var="Pos_Z"/>
+			</Event>
+			<Event Name="PICKED_CAP" Type="Event">
+			</Event>
+			<Event Name="RELEASED_CAP" Type="Event">
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="REACHED_PICKUP_POSITION" Type="Event">
+			</Event>
+			<Event Name="REACHED_DROP_POSITION" Type="Event">
+			</Event>
+			<Event Name="CAPPED_SPINNER" Type="Event">
+			</Event>
+			<Event Name="FLIP_REQUIRED" Type="Event">
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="Pos_X" Type="REAL"/>
+			<VarDeclaration Name="Pos_Y" Type="REAL"/>
+			<VarDeclaration Name="Pos_Z" Type="REAL"/>
+		</InputVars>
+		<Plugs>
+			<AdapterDeclaration Name="Timer" Type="ARTimeOut"/>
+		</Plugs>
+	</InterfaceList>
+	<BasicFB>
+		<ECC>
+			<ECState Name="START" Comment="Initial State"  x="540" y="420">
+			</ECState>
+			<ECState Name="s_MOVE_PICKUP_POS" x="2040" y="340">
+				<ECAction Algorithm="alg_move_init"/>
+				<ECAction Algorithm="alg_move" Output="Timer.START"/>
+			</ECState>
+			<ECState Name="s_Move_done" x="2000" y="1100">
+				<ECAction Algorithm="alg_move_Done" Output="REACHED_PICKUP_POSITION"/>
+			</ECState>
+			<ECState Name="s_MOVE_DROP_POS" x="1233.33" y="1666.67">
+				<ECAction Algorithm="alg_move_init"/>
+				<ECAction Algorithm="alg_move" Output="Timer.START"/>
+			</ECState>
+			<ECState Name="s_DROP_POS_Reached" x="900" y="2300">
+				<ECAction Algorithm="alg_move_Done" Output="REACHED_DROP_POSITION"/>
+			</ECState>
+			<ECState Name="s_MOVE_HOME" x="-1500" y="1700">
+				<ECAction Algorithm="alg_move_init"/>
+				<ECAction Algorithm="alg_move" Output="Timer.START"/>
+			</ECState>
+			<ECState Name="s_HOMED" x="-1400" y="800">
+				<ECAction Output="CAPPED_SPINNER"/>
+			</ECState>
+			<ECTransition Source="s_Move_done" Destination="START" Condition="1" Comment="" x="1520" y="920"/>
+			<ECTransition Source="START" Destination="s_MOVE_PICKUP_POS" Condition="CAP_REACHABLE" Comment="" x="1460" y="460"/>
+			<ECTransition Source="s_MOVE_PICKUP_POS" Destination="s_Move_done" Condition="Timer.TimeOut" Comment="" x="2260" y="806.67"/>
+			<ECTransition Source="s_DROP_POS_Reached" Destination="START" Condition="1" Comment="" x="613.33" y="1560"/>
+			<ECTransition Source="START" Destination="s_MOVE_DROP_POS" Condition="PICKED_CAP" Comment="" x="1093.33" y="1100"/>
+			<ECTransition Source="s_MOVE_DROP_POS" Destination="s_DROP_POS_Reached" Condition="Timer.TimeOut" Comment="" x="1606.67" y="2053.33"/>
+			<ECTransition Source="s_HOMED" Destination="START" Condition="1" Comment="" x="-786.67" y="740"/>
+			<ECTransition Source="START" Destination="s_MOVE_HOME" Condition="RELEASED_CAP" Comment="" x="-126.67" y="1200"/>
+			<ECTransition Source="s_MOVE_HOME" Destination="s_HOMED" Condition="Timer.TimeOut" Comment="" x="-1466.67" y="1320"/>
+		</ECC>
+		<Algorithm Name="alg_move_init">
+			<ST><![CDATA[Timer.DT := T#3s;]]></ST>
+		</Algorithm>
+		<Algorithm Name="alg_move">
+			<ST><![CDATA[]]></ST>
+		</Algorithm>
+		<Algorithm Name="alg_move_Done">
+			<ST><![CDATA[]]></ST>
+		</Algorithm>
+	</BasicFB>
+</FBType>

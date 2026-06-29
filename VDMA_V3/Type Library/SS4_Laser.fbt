@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS4_Laser" Comment="Basic FB with empty ECC" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="DEVIASH" Date="2025-08-24">
+	</VersionInfo>
+	<CompilerInfo>
+	</CompilerInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="PRINT_LABEL" Type="Event">
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="DONE" Type="Event">
+			</Event>
+		</EventOutputs>
+	</InterfaceList>
+	<BasicFB>
+		<ECC>
+			<ECState Name="START" Comment="Initial State"  x="550" y="425">
+			</ECState>
+			<ECState Name="State" x="1340" y="1033.33">
+				<ECAction Output="DONE"/>
+			</ECState>
+			<ECTransition Source="START" Destination="State" Condition="PRINT_LABEL" Comment="" x="1780" y="660"/>
+			<ECTransition Source="State" Destination="START" Condition="1" Comment="" x="1073.33" y="826.67"/>
+		</ECC>
+	</BasicFB>
+</FBType>

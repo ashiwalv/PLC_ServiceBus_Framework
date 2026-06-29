@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS2_ifb_Base_Fixer" Comment="Template for a Basic Function Block Type" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="DEVIASH" Date="2024-07-25">
+	</VersionInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="BASE_PLACED" Type="Event" Comment="Initialization Request" >
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="FIX_BASE" Type="Event" Comment="Initialization Confirm" >
+			</Event>
+		</EventOutputs>
+	</InterfaceList>
+	<BasicFB>
+		<ECC>
+			<ECState Name="START" Comment="Initial State"  x="473.33" y="1120">
+			</ECState>
+			<ECState Name="Init" Comment="Initialization"  x="2133.33" y="666.67">
+				<ECAction Algorithm="initialize" Output="FIX_BASE"/>
+			</ECState>
+			<ECTransition Source="START" Destination="Init" Condition="BASE_PLACED" Comment="" x="840" y="920"/>
+			<ECTransition Source="Init" Destination="START" Condition="1" Comment="" x="1320" y="1586.67"/>
+		</ECC>
+		<Algorithm Name="initialize">
+			<ST><![CDATA[ALGORITHM initialize
+
+END_ALGORITHM
+
+]]></ST>
+		</Algorithm>
+	</BasicFB>
+</FBType>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS4_ifb_Laser_2" Comment="Basic FB with empty ECC" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="DEVIASH" Date="2025-05-06">
+	</VersionInfo>
+	<CompilerInfo>
+	</CompilerInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="START" Type="Event">
+				<With Var="Name"/>
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="DONE" Type="Event">
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="Name" Type="STRING"/>
+		</InputVars>
+	</InterfaceList>
+	<BasicFB>
+		<ECC>
+			<ECState Name="START" Comment="Initial State"  x="550" y="425">
+			</ECState>
+			<ECState Name="State" x="1886.67" y="486.67">
+				<ECAction Algorithm="alg_print" Output="DONE"/>
+			</ECState>
+			<ECTransition Source="START" Destination="State" Condition="START" Comment="" x="1406.67" y="546.67"/>
+			<ECTransition Source="State" Destination="START" Condition="1" Comment="" x="1340" y="973.33"/>
+		</ECC>
+		<Algorithm Name="alg_print">
+			<ST><![CDATA[ALGORITHM alg_print
+
+END_ALGORITHM
+
+]]></ST>
+		</Algorithm>
+	</BasicFB>
+</FBType>

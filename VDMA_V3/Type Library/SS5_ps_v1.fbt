@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS5_ps_v1" Comment="Composite FB wrapping other FBs" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="DEVIASH" Date="2025-07-23">
+	</VersionInfo>
+	<CompilerInfo>
+	</CompilerInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="START_S5" Type="Event">
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="S5_DONE" Type="Event">
+			</Event>
+		</EventOutputs>
+	</InterfaceList>
+	<FBNetwork>
+		<FB Name="SS5_ifb_ps_AirNozzle" Type="SS5_ifb_ps_AirNozzle" x="-1400" y="-800">
+			<Parameter Name="ID_SUB_START" Value="&quot;id&quot;"/>
+			<Parameter Name="ID_SUB_STOP" Value="&quot;id&quot;"/>
+			<Parameter Name="ID_PUB_DONE" Value="&quot;id&quot;"/>
+		</FB>
+		<FB Name="SS5_ifb_ps_Camera" Type="UserLibs::SubStations::SS5::SS5_ifb_ps_Camera" x="-3400" y="400">
+			<Parameter Name="ID_SUB_CHECK_LABEL" Value="&quot;id&quot;"/>
+			<Parameter Name="ID_SUB_CHECK_SPEED" Value="&quot;id&quot;"/>
+			<Parameter Name="ID_PUB_CHECK_LABEL_DONE" Value="&quot;id&quot;"/>
+			<Parameter Name="ID_PUB_CHECK_SPEED_DONE" Value="&quot;id&quot;"/>
+		</FB>
+		<FB Name="SS5_ifb_ps_Ejector" Type="UserLibs::SubStations::SS5::SS5_ifb_ps_Ejector" x="-1400" y="100">
+			<Parameter Name="ID_SUB_FIX" Value="&quot;id&quot;"/>
+			<Parameter Name="ID_SUB_RELEASED" Value="&quot;id&quot;"/>
+			<Parameter Name="ID_SUB_CHECK_SPEED_DONE" Value="&quot;id&quot;"/>
+			<Parameter Name="ID_PUB_S5_DONE" Value="&quot;id&quot;"/>
+			<Parameter Name="ID_PUB_CHECK_SPEED" Value="&quot;id&quot;"/>
+			<Parameter Name="ID_PUB_FIXED" Value="&quot;id&quot;"/>
+			<Parameter Name="ID_PUB_START_AIR_NOZZLE" Value="&quot;id&quot;"/>
+			<Parameter Name="ID_PUB_STOP_AIR_NOZZLE" Value="&quot;id&quot;"/>
+		</FB>
+		<FB Name="SS5_ifb_ps_Raiser_n_Flipper" Type="UserLibs::SubStations::SS5::SS5_ifb_ps_Raiser_n_Flipper" x="-3600" y="-900">
+			<Parameter Name="ID_SUB_START_S5" Value="&quot;id&quot;"/>
+			<Parameter Name="ID_SUB_LABEL_CHECK_DONE" Value="&quot;id&quot;"/>
+			<Parameter Name="ID_SUB_FIXED" Value="&quot;id&quot;"/>
+			<Parameter Name="ID_PUB_CHECK_LABAL" Value="&quot;id&quot;"/>
+			<Parameter Name="ID_PUB_FIX" Value="&quot;id&quot;"/>
+			<Parameter Name="ID_PUB_RELEASED" Value="&quot;id&quot;"/>
+		</FB>
+		<EventConnections>
+			<Connection Source="START_S5" Destination="SS5_ifb_ps_Raiser_n_Flipper.INIT" dx1="700"/>
+			<Connection Source="SS5_ifb_ps_Ejector.DONE" Destination="S5_DONE" dx1="933.33"/>
+		</EventConnections>
+	</FBNetwork>
+</FBType>

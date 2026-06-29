@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS4_ps_Raiser_n_Flipper" Comment="Composite FB wrapping other FBs" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="PS_Transformer_for_Unknown" Date="2025-08-25">
+	</VersionInfo>
+	<CompilerInfo>
+	</CompilerInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="INIT" Type="Event" Comment="Initialization Request" >
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="INITO" Type="Event" Comment="Initialization Confirm" >
+				<With Var="Status"/>
+			</Event>
+			<Event Name="DONE" Type="Event" Comment="Execution Confirmation" >
+				<With Var="Status"/>
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="ID_SUB_NEXT_PRODUCT" Type="WSTRING"/>
+			<VarDeclaration Name="ID_SUB_PRINT_IS_DONE" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_PRINT_LABEL" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_STEP_COMPLETED" Type="WSTRING"/>
+		</InputVars>
+		<OutputVars>
+			<VarDeclaration Name="Status" Type="WSTRING" Comment="Output event qualifier" />
+		</OutputVars>
+	</InterfaceList>
+	<FBNetwork>
+		<FB Name="SS4_Raiser_n_Flipper_Instance" Type="SS4_Raiser_n_Flipper" x="1100" y="700">
+		</FB>
+		<FB Name="SUBSCRIBE_NEXT_PRODUCT" Type="SUBSCRIBE_0" x="500" y="100">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="SUBSCRIBE_PRINT_IS_DONE" Type="SUBSCRIBE_0" x="1700" y="100">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_PRINT_LABEL" Type="PUBLISH_0" x="500" y="1300">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_STEP_COMPLETED" Type="PUBLISH_0" x="1700" y="1300">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<EventConnections>
+			<Connection Source="INIT" Destination="SUBSCRIBE_NEXT_PRODUCT.INIT" dx1="300"/>
+			<Connection Source="SUBSCRIBE_NEXT_PRODUCT.INITO" Destination="SUBSCRIBE_PRINT_IS_DONE.INIT" dx1="300"/>
+			<Connection Source="SUBSCRIBE_PRINT_IS_DONE.INITO" Destination="PUBLISH_PRINT_LABEL.INIT" dx1="300"/>
+			<Connection Source="PUBLISH_PRINT_LABEL.INITO" Destination="PUBLISH_STEP_COMPLETED.INIT" dx1="300"/>
+			<Connection Source="PUBLISH_STEP_COMPLETED.INITO" Destination="INITO" dx1="300"/>
+			<Connection Source="SUBSCRIBE_NEXT_PRODUCT.IND" Destination="SS4_Raiser_n_Flipper_Instance.NEXT_PRODUCT" dx1="300"/>
+			<Connection Source="SUBSCRIBE_PRINT_IS_DONE.IND" Destination="SS4_Raiser_n_Flipper_Instance.PRINT_IS_DONE" dx1="300"/>
+			<Connection Source="SS4_Raiser_n_Flipper_Instance.PRINT_LABEL" Destination="PUBLISH_PRINT_LABEL.REQ" dx1="300"/>
+			<Connection Source="SS4_Raiser_n_Flipper_Instance.STEP_COMPLETED" Destination="PUBLISH_STEP_COMPLETED.REQ" dx1="300"/>
+			<Connection Source="PUBLISH_PRINT_LABEL.CNF" Destination="DONE" dx1="300"/>
+			<Connection Source="PUBLISH_STEP_COMPLETED.CNF" Destination="DONE" dx1="300"/>
+		</EventConnections>
+		<DataConnections>
+			<Connection Source="ID_SUB_NEXT_PRODUCT" Destination="SUBSCRIBE_NEXT_PRODUCT.ID" dx1="300"/>
+			<Connection Source="ID_SUB_PRINT_IS_DONE" Destination="SUBSCRIBE_PRINT_IS_DONE.ID" dx1="300"/>
+			<Connection Source="ID_PUB_PRINT_LABEL" Destination="PUBLISH_PRINT_LABEL.ID" dx1="300"/>
+			<Connection Source="ID_PUB_STEP_COMPLETED" Destination="PUBLISH_STEP_COMPLETED.ID" dx1="300"/>
+		</DataConnections>
+	</FBNetwork>
+</FBType>

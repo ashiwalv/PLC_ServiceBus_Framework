@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS5a_Ejector" Comment="Basic FB with empty ECC" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="DEVIASH" Date="2024-10-03">
+	</VersionInfo>
+	<CompilerInfo>
+	</CompilerInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="FIX" Type="Event">
+			</Event>
+			<Event Name="RELEASED" Type="Event">
+			</Event>
+			<Event Name="CHECK_SPEED_DONE" Type="Event">
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="S5a_DONE" Type="Event">
+			</Event>
+			<Event Name="CHECK_SPEED" Type="Event">
+			</Event>
+			<Event Name="FIXED" Type="Event">
+			</Event>
+			<Event Name="START_AIR_NOZZLE" Type="Event">
+			</Event>
+			<Event Name="STOP_AIR_NOZZLE" Type="Event">
+			</Event>
+		</EventOutputs>
+	</InterfaceList>
+	<BasicFB>
+		<ECC>
+			<ECState Name="START" Comment="Initial State"  x="550" y="425">
+			</ECState>
+			<ECState Name="State" x="2026.67" y="626.67">
+				<ECAction Output="FIXED"/>
+			</ECState>
+			<ECState Name="State_1" x="2000" y="1206.67">
+				<ECAction Output="START_AIR_NOZZLE"/>
+			</ECState>
+			<ECState Name="State_2" x="1866.67" y="1733.33">
+				<ECAction Output="CHECK_SPEED"/>
+			</ECState>
+			<ECState Name="State_3" x="2000" y="2666.67">
+				<ECAction Output="STOP_AIR_NOZZLE"/>
+				<ECAction Output="S5a_DONE"/>
+			</ECState>
+			<ECTransition Source="START" Destination="State" Condition="FIX" Comment="" x="1446.67" y="606.67"/>
+			<ECTransition Source="State" Destination="START" Condition="1" Comment="" x="1466.67" y="320"/>
+			<ECTransition Source="START" Destination="State_1" Condition="RELEASED" Comment="" x="1366.67" y="866.67"/>
+			<ECTransition Source="State_1" Destination="State_2" Condition="1" Comment="" x="2080" y="1533.33"/>
+			<ECTransition Source="State_2" Destination="State_3" Condition="" Comment="" x="2166.67" y="2233.33"/>
+			<ECTransition Source="State_3" Destination="START" Condition="1" Comment="" x="1433.33" y="1653.33"/>
+		</ECC>
+	</BasicFB>
+</FBType>

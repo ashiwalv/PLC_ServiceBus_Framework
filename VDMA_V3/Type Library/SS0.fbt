@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS0" Comment="Composite FB wrapping other FBs" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="DEVIASH" Date="2024-08-30">
+	</VersionInfo>
+	<CompilerInfo>
+	</CompilerInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="ORDER_PLACED" Type="Event" Comment="Initialization Request" >
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="MAGZINE_OUT" Type="Event" Comment="Initialization Confirm" >
+			</Event>
+		</EventOutputs>
+	</InterfaceList>
+	<FBNetwork>
+		<FB Name="E_TimeOut" Type="E_TimeOut" x="3073.33" y="-100">
+		</FB>
+		<FB Name="SS0_ifb_magzine" Type="SS0_ifb_magzine" x="600" y="-500">
+		</FB>
+		<EventConnections>
+			<Connection Source="ORDER_PLACED" Destination="SS0_ifb_magzine.ORDER_PLACED" dx1="2220"/>
+			<Connection Source="SS0_ifb_magzine.TOOL_MAGZINE_OUT" Destination="MAGZINE_OUT" dx1="3180"/>
+		</EventConnections>
+		<AdapterConnections>
+			<Connection Source="SS0_ifb_magzine.PLUG1" Destination="E_TimeOut.TimeOutSocket" dx1="366.67"/>
+		</AdapterConnections>
+	</FBNetwork>
+</FBType>

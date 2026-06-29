@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS3_ifb_ps_Axis" Comment="Composite FB wrapping other FBs" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="PS_Transformer_for_Unknown" Date="2025-05-26">
+	</VersionInfo>
+	<CompilerInfo>
+	</CompilerInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="INIT" Type="Event" Comment="Initialization Request" >
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="INITO" Type="Event" Comment="Initialization Confirm" >
+				<With Var="Status"/>
+			</Event>
+			<Event Name="DONE" Type="Event" Comment="Execution Confirmation" >
+				<With Var="Status"/>
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="ID_SUB_CAP_REACHABLE" Type="WSTRING"/>
+			<VarDeclaration Name="ID_SUB_PICKED_CAP" Type="WSTRING"/>
+			<VarDeclaration Name="ID_SUB_RELEASED_CAP" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_REACHED_PICKUP_POSITION" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_REACHED_DROP_POSITION" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_CAPPED_SPINNER" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_FLIP_REQUIRED" Type="WSTRING"/>
+		</InputVars>
+		<OutputVars>
+			<VarDeclaration Name="Status" Type="WSTRING" Comment="Output event qualifier" />
+		</OutputVars>
+	</InterfaceList>
+	<FBNetwork>
+		<FB Name="SS3_ifb_Axis_Instance" Type="SS3_ifb_Axis" x="2200" y="100">
+		</FB>
+		<FB Name="SUBSCRIBE_CAP_REACHABLE" Type="SUBSCRIBE_3" x="300" y="-600">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="SUBSCRIBE_PICKED_CAP" Type="SUBSCRIBE_0" x="400" y="400">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="SUBSCRIBE_RELEASED_CAP" Type="SUBSCRIBE_0" x="400" y="1300">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_REACHED_PICKUP_POSITION" Type="PUBLISH_0" x="4100" y="-600">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_REACHED_DROP_POSITION" Type="PUBLISH_0" x="4300" y="300">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_CAPPED_SPINNER" Type="PUBLISH_0" x="4500" y="2200">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_FLIP_REQUIRED" Type="PUBLISH_0" x="4500" y="1000">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<EventConnections>
+			<Connection Source="INIT" Destination="SUBSCRIBE_CAP_REACHABLE.INIT" dx1="300"/>
+			<Connection Source="SUBSCRIBE_CAP_REACHABLE.INITO" Destination="SUBSCRIBE_PICKED_CAP.INIT" dx1="80" dx2="80" dy="500"/>
+			<Connection Source="SUBSCRIBE_PICKED_CAP.INITO" Destination="SUBSCRIBE_RELEASED_CAP.INIT" dx1="80" dx2="80" dy="346.67"/>
+			<Connection Source="SUBSCRIBE_RELEASED_CAP.INITO" Destination="PUBLISH_REACHED_PICKUP_POSITION.INIT" dx1="2480"/>
+			<Connection Source="PUBLISH_REACHED_PICKUP_POSITION.INITO" Destination="PUBLISH_REACHED_DROP_POSITION.INIT" dx1="80" dx2="80" dy="946.67"/>
+			<Connection Source="PUBLISH_REACHED_DROP_POSITION.INITO" Destination="PUBLISH_CAPPED_SPINNER.INIT" dx1="80" dx2="80" dy="500"/>
+			<Connection Source="PUBLISH_CAPPED_SPINNER.INITO" Destination="PUBLISH_FLIP_REQUIRED.INIT" dx1="80" dx2="80" dy="-446.67"/>
+			<Connection Source="PUBLISH_FLIP_REQUIRED.INITO" Destination="INITO" dx1="300"/>
+			<Connection Source="SUBSCRIBE_CAP_REACHABLE.IND" Destination="SS3_ifb_Axis_Instance.CAP_REACHABLE" dx1="300"/>
+			<Connection Source="SUBSCRIBE_PICKED_CAP.IND" Destination="SS3_ifb_Axis_Instance.PICKED_CAP" dx1="300"/>
+			<Connection Source="SUBSCRIBE_RELEASED_CAP.IND" Destination="SS3_ifb_Axis_Instance.RELEASED_CAP" dx1="300"/>
+			<Connection Source="SS3_ifb_Axis_Instance.REACHED_PICKUP_POSITION" Destination="PUBLISH_REACHED_PICKUP_POSITION.REQ" dx1="466.67"/>
+			<Connection Source="SS3_ifb_Axis_Instance.REACHED_DROP_POSITION" Destination="PUBLISH_REACHED_DROP_POSITION.REQ" dx1="540"/>
+			<Connection Source="SS3_ifb_Axis_Instance.CAPPED_SPINNER" Destination="PUBLISH_CAPPED_SPINNER.REQ" dx1="560"/>
+			<Connection Source="SS3_ifb_Axis_Instance.FLIP_REQUIRED" Destination="PUBLISH_FLIP_REQUIRED.REQ" dx1="300"/>
+			<Connection Source="PUBLISH_REACHED_PICKUP_POSITION.CNF" Destination="DONE" dx1="300"/>
+			<Connection Source="PUBLISH_REACHED_DROP_POSITION.CNF" Destination="DONE" dx1="300"/>
+			<Connection Source="PUBLISH_CAPPED_SPINNER.CNF" Destination="DONE" dx1="300"/>
+			<Connection Source="PUBLISH_FLIP_REQUIRED.CNF" Destination="DONE" dx1="300"/>
+		</EventConnections>
+		<DataConnections>
+			<Connection Source="ID_SUB_CAP_REACHABLE" Destination="SUBSCRIBE_CAP_REACHABLE.ID" dx1="300"/>
+			<Connection Source="ID_SUB_PICKED_CAP" Destination="SUBSCRIBE_PICKED_CAP.ID" dx1="300"/>
+			<Connection Source="ID_SUB_RELEASED_CAP" Destination="SUBSCRIBE_RELEASED_CAP.ID" dx1="300"/>
+			<Connection Source="ID_PUB_REACHED_PICKUP_POSITION" Destination="PUBLISH_REACHED_PICKUP_POSITION.ID" dx1="300"/>
+			<Connection Source="ID_PUB_REACHED_DROP_POSITION" Destination="PUBLISH_REACHED_DROP_POSITION.ID" dx1="300"/>
+			<Connection Source="ID_PUB_CAPPED_SPINNER" Destination="PUBLISH_CAPPED_SPINNER.ID" dx1="300"/>
+			<Connection Source="ID_PUB_FLIP_REQUIRED" Destination="PUBLISH_FLIP_REQUIRED.ID" dx1="300"/>
+			<Connection Source="SUBSCRIBE_CAP_REACHABLE.RD_1" Destination="SS3_ifb_Axis_Instance.Pos_X" dx1="300"/>
+			<Connection Source="SUBSCRIBE_CAP_REACHABLE.RD_2" Destination="SS3_ifb_Axis_Instance.Pos_Y" dx1="300"/>
+			<Connection Source="SUBSCRIBE_CAP_REACHABLE.RD_3" Destination="SS3_ifb_Axis_Instance.Pos_Z" dx1="300"/>
+		</DataConnections>
+	</FBNetwork>
+</FBType>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS4_v_ps01Pub_Sub_V2" Comment="Composite FB wrapping other FBs" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="DEVIASH" Date="2024-10-03">
+	</VersionInfo>
+	<CompilerInfo packageName="UserLibs::SubStations::SS4">
+	</CompilerInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="START_LASER_PRINTING" Type="Event" Comment="Initialization Request" >
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="PRINTING_DONE" Type="Event" Comment="Initialization Confirm" >
+			</Event>
+		</EventOutputs>
+	</InterfaceList>
+	<FBNetwork>
+		<FB Name="Raiser_n_Flipper" Type="SS4_ifb_Raiser_n_Flipper" x="-1100" y="-100">
+		</FB>
+		<FB Name="Laser" Type="SS4_ifb_Laser_1" x="3200" y="200">
+		</FB>
+		<FB Name="PUBLISH_1" Type="PUBLISH_1" x="400" y="-900">
+			<Parameter Name="ID" Value="&quot;225.0.0.7:61500&quot;"/>
+		</FB>
+		<FB Name="SUBSCRIBE_1" Type="SUBSCRIBE_1" x="2100" y="-900">
+			<Parameter Name="ID" Value="&quot;225.0.0.5:61500&quot;"/>
+		</FB>
+		<FB Name="SS4_ifb_Laser_2" Type="SS4_ifb_Laser_2" x="1500" y="2000">
+		</FB>
+		<FB Name="PUBLISH_2" Type="PUBLISH_1" x="5400" y="700">
+			<Parameter Name="ID" Value="&quot;225.0.0.9:61500&quot;"/>
+		</FB>
+		<FB Name="SUBSCRIBE_2" Type="SUBSCRIBE_1" x="-2300" y="200">
+			<Parameter Name="ID" Value="&quot;225.0.0.9:61500&quot;"/>
+		</FB>
+		<FB Name="SUBSCRIBE_3" Type="SUBSCRIBE_1" x="100" y="2000">
+			<Parameter Name="ID" Value="&quot;225.0.0.7:61500&quot;"/>
+		</FB>
+		<FB Name="PUBLISH_3" Type="PUBLISH_1" x="3200" y="2000">
+			<Parameter Name="ID" Value="&quot;225.0.0.5:61500&quot;"/>
+		</FB>
+		<EventConnections>
+			<Connection Source="START_LASER_PRINTING" Destination="Raiser_n_Flipper.NEXT_PRODUCT" dx1="2166.67"/>
+			<Connection Source="Raiser_n_Flipper.LABELLING_DONE" Destination="PRINTING_DONE" dx1="3206.67"/>
+			<Connection Source="Raiser_n_Flipper.PRINT" Destination="PUBLISH_1.REQ" dx1="80" dx2="80" dy="-346.67"/>
+			<Connection Source="SUBSCRIBE_1.IND" Destination="Laser.START" dx1="153.33"/>
+			<Connection Source="PUBLISH_1.INITO" Destination="SUBSCRIBE_1.INIT"/>
+			<Connection Source="Laser.DONE" Destination="PUBLISH_2.REQ" dx1="526.67"/>
+			<Connection Source="SUBSCRIBE_3.IND" Destination="SS4_ifb_Laser_2.START" dx1="300"/>
+			<Connection Source="SS4_ifb_Laser_2.DONE" Destination="PUBLISH_3.REQ" dx1="373.33"/>
+			<Connection Source="SUBSCRIBE_2.IND" Destination="Raiser_n_Flipper.PRINTING_DONE" dx1="200"/>
+			<Connection Source="SUBSCRIBE_1.INITO" Destination="PUBLISH_2.INIT" dx1="1253.33"/>
+			<Connection Source="PUBLISH_2.INITO" Destination="SUBSCRIBE_3.INIT" dx1="80" dx2="80" dy="646.67"/>
+			<Connection Source="SUBSCRIBE_3.INITO" Destination="PUBLISH_3.INIT"/>
+			<Connection Source="PUBLISH_3.INITO" Destination="SUBSCRIBE_2.INIT" dx1="80" dx2="80" dy="-900"/>
+		</EventConnections>
+	</FBNetwork>
+</FBType>

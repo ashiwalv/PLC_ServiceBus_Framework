@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS3_PnP" Comment="Basic FB with empty ECC" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="DEVIASH" Date="2025-08-24">
+	</VersionInfo>
+	<CompilerInfo>
+	</CompilerInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="PLACE_LID" Type="Event">
+				<With Var="pos_x"/>
+				<With Var="pos_y"/>
+				<With Var="pos_z"/>
+			</Event>
+			<Event Name="BASE_FLIPPED" Type="Event">
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="NEXT_LID" Type="Event">
+			</Event>
+			<Event Name="FLIP_BASE" Type="Event">
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="pos_x" Type="REAL"/>
+			<VarDeclaration Name="pos_y" Type="REAL"/>
+			<VarDeclaration Name="pos_z" Type="REAL"/>
+		</InputVars>
+	</InterfaceList>
+	<BasicFB>
+		<ECC>
+			<ECState Name="START" Comment="Initial State"  x="550" y="425">
+			</ECState>
+			<ECState Name="State" x="2000" y="1706.67">
+			</ECState>
+			<ECTransition Source="START" Destination="State" Condition="1" Comment="" x="1460" y="1146.67"/>
+			<ECTransition Source="State" Destination="START" Condition="1" Comment="" x="1393.33" y="1186.67"/>
+		</ECC>
+	</BasicFB>
+</FBType>

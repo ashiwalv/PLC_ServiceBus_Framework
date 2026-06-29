@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS5" Comment="Composite FB wrapping other FBs" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="DEVIASH" Date="2024-10-03">
+	</VersionInfo>
+	<CompilerInfo packageName="UserLibs::SubStations::SS5">
+	</CompilerInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="START_S5" Type="Event" Comment="Initialization Request" >
+				<With Var="Label"/>
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="S5_Done" Type="Event" Comment="Initialization Confirm" >
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="Label" Type="STRING"/>
+		</InputVars>
+	</InterfaceList>
+	<FBNetwork>
+		<FB Name="Camera" Type="UserLibs::SubStations::SS5::SS5_ifb_Camera" x="2600" y="-900">
+		</FB>
+		<FB Name="SS5_ifb_AirNozzle" Type="SS5_AirNozzle" x="1731.25" y="700">
+		</FB>
+		<FB Name="SS5_ifb_Ejector" Type="UserLibs::SubStations::SS5::SS5_ifb_Ejector" x="4131.25" y="-200">
+		</FB>
+		<FB Name="SS5_ifb_Raiser_n_Flipper" Type="UserLibs::SubStations::SS5::SS5_ifb_Raiser_n_Flipper" x="1043.75" y="-287.5">
+		</FB>
+		<EventConnections>
+			<Connection Source="SS5_ifb_Raiser_n_Flipper.CHECK_LABEL" Destination="Camera.CHECK_LABEL" dx1="162.5"/>
+			<Connection Source="SS5_ifb_Ejector.CHECK_SPEED" Destination="Camera.CHECK_SPEED" dx1="62.5" dx2="56.25" dy="-268.75"/>
+			<Connection Source="SS5_ifb_Ejector.FIXED" Destination="SS5_ifb_Raiser_n_Flipper.FIXED" dx1="62.5" dx2="56.25" dy="500"/>
+			<Connection Source="SS5_ifb_Raiser_n_Flipper.FIX" Destination="SS5_ifb_Ejector.FIX" dx1="925"/>
+			<Connection Source="SS5_ifb_Raiser_n_Flipper.RELEASED" Destination="SS5_ifb_Ejector.RELEASED" dx1="925"/>
+			<Connection Source="SS5_ifb_Ejector.START_AIR_NOZZLE" Destination="SS5_ifb_AirNozzle.START" dx1="125" dx2="125" dy="437.5"/>
+			<Connection Source="SS5_ifb_Ejector.STOP_AIR_NOZZLE" Destination="SS5_ifb_AirNozzle.STOP" dx1="93.75" dx2="93.75" dy="318.75"/>
+			<Connection Source="Camera.CHECK_LABEL_DONE" Destination="SS5_ifb_Raiser_n_Flipper.LABEL_CHECK_DONE" dx1="62.5" dx2="56.25" dy="500"/>
+			<Connection Source="Camera.CHECK_SPEED_DONE" Destination="SS5_ifb_Ejector.CHECK_SPEED_DONE" dx1="100"/>
+			<Connection Source="START_S5" Destination="SS5_ifb_Raiser_n_Flipper.START_S5" dx1="506.25"/>
+		</EventConnections>
+		<DataConnections>
+			<Connection Source="SS5_ifb_Raiser_n_Flipper.Label_o" Destination="Camera.Label" dx1="193.75"/>
+			<Connection Source="Label" Destination="SS5_ifb_Raiser_n_Flipper.Label" dx1="475"/>
+		</DataConnections>
+	</FBNetwork>
+</FBType>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS5a_Camera" Comment="Basic FB with empty ECC" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="DEVIASH" Date="2024-10-03">
+	</VersionInfo>
+	<CompilerInfo>
+	</CompilerInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="CHECK_SPEED" Type="Event">
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="CHECK_SPEED_DONE" Type="Event">
+			</Event>
+		</EventOutputs>
+	</InterfaceList>
+	<BasicFB>
+		<ECC>
+			<ECState Name="START" Comment="Initial State"  x="550" y="425">
+			</ECState>
+			<ECState Name="State" x="2020" y="506.67">
+				<ECAction/>
+			</ECState>
+			<ECState Name="State_1" x="1160" y="1313.33">
+				<ECAction Output="CHECK_SPEED_DONE"/>
+			</ECState>
+			<ECTransition Source="START" Destination="State" Condition="" Comment="" x="1420" y="540"/>
+			<ECTransition Source="State" Destination="START" Condition="1" Comment="" x="1360" y="1066.67"/>
+			<ECTransition Source="START" Destination="State_1" Condition="CHECK_SPEED" Comment="" x="893.33" y="926.67"/>
+			<ECTransition Source="State_1" Destination="START" Condition="1" Comment="" x="406.67" y="1453.33"/>
+		</ECC>
+	</BasicFB>
+</FBType>

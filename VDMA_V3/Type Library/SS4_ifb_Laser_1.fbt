@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS4_ifb_Laser_1" Comment="Basic FB with empty ECC" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="AK121668" Date="2021-08-23">
+	</VersionInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="START" Type="Event">
+				<With Var="name"/>
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="DONE" Type="Event">
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="name" Type="STRING" InitialValue="'Well Done!'"/>
+		</InputVars>
+	</InterfaceList>
+	<BasicFB>
+		<ECC>
+			<ECState Name="START" Comment="Initial State"  x="546.67" y="420">
+			</ECState>
+			<ECState Name="s_Move" x="2046.67" y="340">
+				<ECAction Algorithm="alg_print" Output="DONE"/>
+			</ECState>
+			<ECTransition Source="START" Destination="s_Move" Condition="START" Comment="" x="1460" y="460"/>
+			<ECTransition Source="s_Move" Destination="START" Condition="1" Comment="" x="1533.33" y="1146.67"/>
+		</ECC>
+		<Algorithm Name="alg_init">
+			<ST><![CDATA[ALGORITHM alg_init
+
+END_ALGORITHM]]></ST>
+		</Algorithm>
+		<Algorithm Name="alg_print">
+			<ST><![CDATA[
+
+ALGORITHM alg_print
+
+END_ALGORITHM]]></ST>
+		</Algorithm>
+		<Algorithm Name="alg_print_Done">
+			<ST><![CDATA[
+
+ALGORITHM alg_print_Done
+
+END_ALGORITHM
+
+]]></ST>
+		</Algorithm>
+	</BasicFB>
+</FBType>

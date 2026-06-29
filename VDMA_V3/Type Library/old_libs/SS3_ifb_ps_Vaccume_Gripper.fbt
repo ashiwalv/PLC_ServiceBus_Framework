@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS3_ifb_ps_Vaccume_Gripper" Comment="Composite FB wrapping other FBs" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="PS_Transformer_for_Unknown" Date="2025-05-16">
+	</VersionInfo>
+	<CompilerInfo>
+	</CompilerInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="INIT" Type="Event" Comment="Initialization Request" >
+				<With Var="ID_SUB_Reached_Pickup_Position"/>
+				<With Var="ID_SUB_REACHED_DROP_POSITION"/>
+				<With Var="ID_PUB_PICKED_CAP"/>
+				<With Var="ID_PUB_RELEASED_CAP"/>
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="INITO" Type="Event" Comment="Initialization Confirm" >
+				<With Var="Status"/>
+			</Event>
+			<Event Name="DONE" Type="Event" Comment="Execution Confirmation" >
+				<With Var="Status"/>
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="ID_SUB_Reached_Pickup_Position" Type="WSTRING"/>
+			<VarDeclaration Name="ID_SUB_REACHED_DROP_POSITION" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_PICKED_CAP" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_RELEASED_CAP" Type="WSTRING"/>
+		</InputVars>
+		<OutputVars>
+			<VarDeclaration Name="Status" Type="WSTRING" Comment="Output event qualifier" />
+		</OutputVars>
+	</InterfaceList>
+	<FBNetwork>
+		<FB Name="SS3_ifb_Vaccume_Gripper_Instance" Type="SS3_ifb_Vaccume_Gripper" x="400" y="-300">
+		</FB>
+		<FB Name="SUBSCRIBE_Reached_Pickup_Position" Type="SUBSCRIBE_0" x="-1800" y="-900">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="SUBSCRIBE_REACHED_DROP_POSITION" Type="SUBSCRIBE_0" x="-1700" y="1300">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_PICKED_CAP" Type="PUBLISH_0" x="2200" y="-900">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_RELEASED_CAP" Type="PUBLISH_0" x="2300" y="700">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<EventConnections>
+			<Connection Source="INIT" Destination="SUBSCRIBE_Reached_Pickup_Position.INIT" dx1="300"/>
+			<Connection Source="SUBSCRIBE_Reached_Pickup_Position.INITO" Destination="SUBSCRIBE_REACHED_DROP_POSITION.INIT" dx1="80" dx2="80" dy="400"/>
+			<Connection Source="SUBSCRIBE_REACHED_DROP_POSITION.INITO" Destination="PUBLISH_PICKED_CAP.INIT" dx1="300"/>
+			<Connection Source="PUBLISH_PICKED_CAP.INITO" Destination="PUBLISH_RELEASED_CAP.INIT" dx1="80" dx2="80" dy="846.67"/>
+			<Connection Source="PUBLISH_RELEASED_CAP.INITO" Destination="INITO" dx1="300"/>
+			<Connection Source="SUBSCRIBE_Reached_Pickup_Position.IND" Destination="SS3_ifb_Vaccume_Gripper_Instance.Reached_Pickup_Position" dx1="300"/>
+			<Connection Source="SUBSCRIBE_REACHED_DROP_POSITION.IND" Destination="SS3_ifb_Vaccume_Gripper_Instance.REACHED_DROP_POSITION" dx1="300"/>
+			<Connection Source="SS3_ifb_Vaccume_Gripper_Instance.PICKED_CAP" Destination="PUBLISH_PICKED_CAP.REQ" dx1="233.33"/>
+			<Connection Source="SS3_ifb_Vaccume_Gripper_Instance.RELEASED_CAP" Destination="PUBLISH_RELEASED_CAP.REQ" dx1="260"/>
+			<Connection Source="PUBLISH_PICKED_CAP.CNF" Destination="DONE" dx1="300"/>
+			<Connection Source="PUBLISH_RELEASED_CAP.CNF" Destination="DONE" dx1="300"/>
+		</EventConnections>
+		<DataConnections>
+			<Connection Source="ID_SUB_Reached_Pickup_Position" Destination="SUBSCRIBE_Reached_Pickup_Position.ID" dx1="300"/>
+			<Connection Source="ID_SUB_REACHED_DROP_POSITION" Destination="SUBSCRIBE_REACHED_DROP_POSITION.ID" dx1="300"/>
+			<Connection Source="ID_PUB_PICKED_CAP" Destination="PUBLISH_PICKED_CAP.ID" dx1="300"/>
+			<Connection Source="ID_PUB_RELEASED_CAP" Destination="PUBLISH_RELEASED_CAP.ID" dx1="300"/>
+		</DataConnections>
+	</FBNetwork>
+</FBType>

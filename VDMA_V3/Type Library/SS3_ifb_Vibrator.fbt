@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS3_ifb_Vibrator" Comment="Basic FB with empty ECC" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="AK121668" Date="2021-08-04">
+	</VersionInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="WRONG_CAP_ORIENTATION" Type="Event">
+			</Event>
+			<Event Name="CAP_NOT_REACHABLE" Type="Event">
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="CAPS_AVAILABLE" Type="Event">
+			</Event>
+		</EventOutputs>
+		<OutputVars>
+			<VarDeclaration Name="Status" Type="WSTRING"/>
+		</OutputVars>
+		<Plugs>
+			<AdapterDeclaration Name="Timer" Type="ARTimeOut"/>
+		</Plugs>
+	</InterfaceList>
+	<BasicFB>
+		<ECC>
+			<ECState Name="START" Comment="Initial State"  x="526.67" y="800">
+			</ECState>
+			<ECState Name="s_Flip" x="2800" y="260">
+				<ECAction Algorithm="alg_flip_init"/>
+				<ECAction Algorithm="alg_flip" Output="Timer.START"/>
+			</ECState>
+			<ECState Name="s_Separate" x="926.67" y="3060">
+				<ECAction Algorithm="alg_separate_init"/>
+				<ECAction Algorithm="alg_separate" Output="Timer.START"/>
+			</ECState>
+			<ECState Name="s_Flip_done" x="3260" y="1300">
+				<ECAction Algorithm="alg_flip_exit" Output="CAPS_AVAILABLE"/>
+			</ECState>
+			<ECState Name="s_Seperate_done" x="2726.67" y="2266.67">
+				<ECAction Algorithm="alg_separate_exit" Output="CAPS_AVAILABLE"/>
+			</ECState>
+			<ECTransition Source="START" Destination="s_Flip" Condition="WRONG_CAP_ORIENTATION" Comment="" x="1566.67" y="760"/>
+			<ECTransition Source="START" Destination="s_Separate" Condition="CAP_NOT_REACHABLE" Comment="" x="1280" y="1940"/>
+			<ECTransition Source="s_Flip" Destination="s_Flip_done" Condition="Timer.TimeOut" Comment="" x="3120" y="786.67"/>
+			<ECTransition Source="s_Flip_done" Destination="START" Condition="1" Comment="" x="2040" y="1140"/>
+			<ECTransition Source="s_Separate" Destination="s_Seperate_done" Condition="Timer.TimeOut" Comment="" x="2026.67" y="2726.67"/>
+			<ECTransition Source="s_Seperate_done" Destination="START" Condition="1" Comment="" x="1800" y="1606.67"/>
+		</ECC>
+		<Algorithm Name="alg_flip_init">
+			<ST><![CDATA[ALGORITHM alg_flip_init
+Timer.DT := T#5s;
+Status := "init";
+END_ALGORITHM]]></ST>
+		</Algorithm>
+		<Algorithm Name="alg_flip">
+			<ST><![CDATA[
+
+ALGORITHM alg_flip
+Status := "flipping";
+END_ALGORITHM]]></ST>
+		</Algorithm>
+		<Algorithm Name="alg_flip_exit">
+			<ST><![CDATA[
+
+ALGORITHM alg_flip_exit
+Status := "flipping Done";
+END_ALGORITHM]]></ST>
+		</Algorithm>
+		<Algorithm Name="alg_separate_init">
+			<ST><![CDATA[
+
+ALGORITHM alg_separate_init
+Timer.DT := T#5s;
+Status := "init";
+END_ALGORITHM]]></ST>
+		</Algorithm>
+		<Algorithm Name="alg_separate">
+			<ST><![CDATA[
+
+ALGORITHM alg_separate
+Status := "seperating";
+END_ALGORITHM]]></ST>
+		</Algorithm>
+		<Algorithm Name="alg_separate_exit">
+			<ST><![CDATA[
+
+ALGORITHM alg_separate_exit
+Status := "seperating Done";
+END_ALGORITHM
+
+]]></ST>
+		</Algorithm>
+	</BasicFB>
+</FBType>

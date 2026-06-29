@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<System Name="Scenario_2">
+	<VersionInfo Version="1.0" Author="DEVIASH" Date="2025-08-26">
+	</VersionInfo>
+	<Application Name="Scenario_2App_baseline">
+		<SubAppNetwork>
+		</SubAppNetwork>
+	</Application>
+	<Application Name="Scenario_2App_baseline_modified">
+		<SubAppNetwork>
+		</SubAppNetwork>
+	</Application>
+	<Application Name="Scenario_2App_PLC_Service_bus">
+		<SubAppNetwork>
+		</SubAppNetwork>
+	</Application>
+	<Application Name="Scenario_2App_PLC_Service_bus_modified">
+		<SubAppNetwork>
+		</SubAppNetwork>
+	</Application>
+</System>

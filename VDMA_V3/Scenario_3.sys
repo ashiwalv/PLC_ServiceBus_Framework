@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<System Name="Scenario_3">
+	<VersionInfo Version="1.0" Author="DEVIASH" Date="2025-08-24">
+	</VersionInfo>
+	<Application Name="Scenario_3App" Comment="VDMA" >
+		<SubAppNetwork>
+			<Group Name="S3_Capping_Station" Comment="Puting cap on the spinner"  x="1500" y="366.67" width="4500" height="3133.33" locked="false">
+			</Group>
+			<FB Name="SS3_ps_Flipper" Type="SS3_ps_Flipper" x="2500" y="133.33">
+				<Parameter Name="ID_SUB_FLIP_BASE" Value="&quot;id&quot;"/>
+				<Parameter Name="ID_PUB_BASE_FLIPPED" Value="&quot;id&quot;"/>
+				<Attribute Name="GroupName" Type="STRING" Value="S3_Capping_Station"/>
+			</FB>
+			<FB Name="SS3_ps_Lid_feeder" Type="SS3_ps_Lid_feeder" x="500" y="1433.33">
+				<Parameter Name="ID_SUB_FLIP_LIDS" Value="&quot;id&quot;"/>
+				<Parameter Name="ID_SUB_MORE_LIDS" Value="&quot;id&quot;"/>
+				<Parameter Name="ID_PUB_DONE" Value="&quot;id&quot;"/>
+				<Attribute Name="GroupName" Type="STRING" Value="S3_Capping_Station"/>
+			</FB>
+			<FB Name="SS3_ps_PnP" Type="SS3_ps_PnP" x="2600" y="1433.33">
+				<Parameter Name="ID_SUB_PLACE_LID" Value="&quot;id&quot;"/>
+				<Parameter Name="ID_SUB_BASE_FLIPPED" Value="&quot;id&quot;"/>
+				<Parameter Name="ID_PUB_NEXT_LID" Value="&quot;id&quot;"/>
+				<Parameter Name="ID_PUB_FLIP_BASE" Value="&quot;id&quot;"/>
+				<Attribute Name="GroupName" Type="STRING" Value="S3_Capping_Station"/>
+			</FB>
+			<FB Name="SS3_ps_Camera_Advance" Type="SS3_ps_Camera_Advance" x="600" y="133.33">
+				<Attribute Name="GroupName" Type="STRING" Value="S3_Capping_Station"/>
+			</FB>
+		</SubAppNetwork>
+	</Application>
+	<Application Name="Scenario_3_PreApp" Comment="VDMA" >
+		<SubAppNetwork>
+			<FB Name="SS3_Lid_feeder" Type="SS3_Lid_feeder" x="2286.67" y="366.67">
+				<Attribute Name="GroupName" Type="STRING" Value="S3_Capping_Station"/>
+			</FB>
+			<FB Name="SS3_PnP" Type="SS3_PnP" x="2186.67" y="966.67">
+				<Attribute Name="GroupName" Type="STRING" Value="S3_Capping_Station"/>
+			</FB>
+			<FB Name="SS3_Camera" Type="SS3_Camera" x="386.67" y="766.67">
+				<Attribute Name="GroupName" Type="STRING" Value="S3_Capping_Station"/>
+			</FB>
+			<Group Name="S3_Capping_Station" Comment="Puting cap on the spinner"  x="1900" y="-600" width="4100" height="3000" locked="false">
+			</Group>
+			<FB Name="SS3_ifb_flipper" Type="SS3_ifb_flipper" x="2286.67" y="2000">
+				<Attribute Name="GroupName" Type="STRING" Value="S3_Capping_Station"/>
+			</FB>
+			<EventConnections>
+				<Connection Source="SS3_Camera.PLACE_LID" Destination="SS3_PnP.PLACE_LID"/>
+				<Connection Source="SS3_PnP.NEXT_LID" Destination="SS3_Camera.NEXT_LID" dx1="80" dx2="80" dy="-926.67"/>
+				<Connection Source="SS3_Camera.FLIP_LID" Destination="SS3_Lid_feeder.FLIP_LIDS" dx1="373.33"/>
+				<Connection Source="SS3_Camera.MORE_LID" Destination="SS3_Lid_feeder.MORE_LIDS" dx1="373.33"/>
+				<Connection Source="SS3_Lid_feeder.DONE" Destination="SS3_Camera.LID_FEEDER_DONE" dx1="80" dx2="80" dy="-220"/>
+				<Connection Source="SS3_PnP.FLIP_BASE" Destination="SS3_ifb_flipper.FLIP_BASE" dx1="-1146.67"/>
+				<Connection Source="SS3_ifb_flipper.BASE_FLIPPED" Destination="SS3_PnP.BASE_FLIPPED" dx1="80" dx2="80" dy="-213.33"/>
+			</EventConnections>
+			<DataConnections>
+				<Connection Source="SS3_Camera.pos_X" Destination="SS3_PnP.pos_x" dx1="466.67"/>
+				<Connection Source="SS3_Camera.pos_Y" Destination="SS3_PnP.pos_y" dx1="466.67"/>
+				<Connection Source="SS3_Camera.pos_Z" Destination="SS3_PnP.pos_z" dx1="466.67"/>
+			</DataConnections>
+		</SubAppNetwork>
+	</Application>
+</System>

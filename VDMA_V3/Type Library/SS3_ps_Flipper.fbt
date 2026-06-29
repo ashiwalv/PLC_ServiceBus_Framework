@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS3_ps_Flipper" Comment="Composite FB wrapping other FBs" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="PS_Transformer_for_Unknown" Date="2025-08-24">
+	</VersionInfo>
+	<CompilerInfo>
+	</CompilerInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="INIT" Type="Event" Comment="Initialization Request" >
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="INITO" Type="Event" Comment="Initialization Confirm" >
+				<With Var="Status"/>
+			</Event>
+			<Event Name="DONE" Type="Event" Comment="Execution Confirmation" >
+				<With Var="Status"/>
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="ID_SUB_FLIP_BASE" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_BASE_FLIPPED" Type="WSTRING"/>
+		</InputVars>
+		<OutputVars>
+			<VarDeclaration Name="Status" Type="WSTRING" Comment="Output event qualifier" />
+		</OutputVars>
+	</InterfaceList>
+	<FBNetwork>
+		<FB Name="SS3_Flipper_Instance" Type="SS4_Raiser_n_Flipper" x="500" y="700">
+		</FB>
+		<FB Name="SUBSCRIBE_FLIP_BASE" Type="SUBSCRIBE_0" x="500" y="100">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_BASE_FLIPPED" Type="PUBLISH_0" x="500" y="1300">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<EventConnections>
+			<Connection Source="INIT" Destination="SUBSCRIBE_FLIP_BASE.INIT" dx1="300"/>
+			<Connection Source="SUBSCRIBE_FLIP_BASE.INITO" Destination="PUBLISH_BASE_FLIPPED.INIT" dx1="300"/>
+			<Connection Source="PUBLISH_BASE_FLIPPED.INITO" Destination="INITO" dx1="300"/>
+			<Connection Source="SUBSCRIBE_FLIP_BASE.IND" Destination="SS3_Flipper_Instance.FLIP_BASE" dx1="300"/>
+			<Connection Source="SS3_Flipper_Instance.BASE_FLIPPED" Destination="PUBLISH_BASE_FLIPPED.REQ" dx1="300"/>
+			<Connection Source="PUBLISH_BASE_FLIPPED.CNF" Destination="DONE" dx1="300"/>
+		</EventConnections>
+		<DataConnections>
+			<Connection Source="ID_SUB_FLIP_BASE" Destination="SUBSCRIBE_FLIP_BASE.ID" dx1="300"/>
+			<Connection Source="ID_PUB_BASE_FLIPPED" Destination="PUBLISH_BASE_FLIPPED.ID" dx1="300"/>
+		</DataConnections>
+	</FBNetwork>
+</FBType>

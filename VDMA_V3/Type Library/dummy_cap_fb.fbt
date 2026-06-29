@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="DummyCapFB" Comment="FB for testing N vars" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="Test" Date="2025-05-16">
+	</VersionInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="CAP_REACHABLE" Type="Event">
+				<With Var="Pos_X"/>
+				<With Var="Pos_Y"/>
+				<With Var="Pos_Z"/>
+			</Event>
+			<Event Name="NO_VARS_IN" Type="Event">
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="DATA_READY" Type="Event">
+				<With Var="OutVal1"/>
+				<With Var="OutVal2"/>
+			</Event>
+			<Event Name="NO_VARS_OUT" Type="Event">
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="Pos_X" Type="LREAL"/>
+			<VarDeclaration Name="Pos_Y" Type="LREAL"/>
+			<VarDeclaration Name="Pos_Z" Type="LREAL"/>
+		</InputVars>
+		<OutputVars>
+			<VarDeclaration Name="OutVal1" Type="INT"/>
+			<VarDeclaration Name="OutVal2" Type="BOOL"/>
+			<VarDeclaration Name="Status" Type="STRING"/>
+		</OutputVars>
+	</InterfaceList>
+	<BasicFB>
+		<ECC>
+			<ECState Name="State" x="1113.33" y="1906.67">
+			</ECState>
+			<ECState Name="State_1" x="2180" y="2120">
+			</ECState>
+			<ECTransition Source="State" Destination="State_1" Condition="CAP_REACHABLE" Comment="" x="1913.33" y="2106.67"/>
+			<ECTransition Source="State_1" Destination="State" Condition="1" Comment="" x="1500" y="2640"/>
+		</ECC>
+	</BasicFB>
+</FBType>

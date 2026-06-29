@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS5_ifb_ps_Raiser_n_Flipper" Comment="Composite FB wrapping other FBs" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="PS_Transformer_for_Unknown" Date="2025-07-23">
+	</VersionInfo>
+	<CompilerInfo packageName="UserLibs::SubStations::SS5">
+	</CompilerInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="INIT" Type="Event" Comment="Initialization Request" >
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="INITO" Type="Event" Comment="Initialization Confirm" >
+				<With Var="Status"/>
+			</Event>
+			<Event Name="DONE" Type="Event" Comment="Execution Confirmation" >
+				<With Var="Status"/>
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="ID_SUB_START_S5" Type="WSTRING"/>
+			<VarDeclaration Name="ID_SUB_LABEL_CHECK_DONE" Type="WSTRING"/>
+			<VarDeclaration Name="ID_SUB_FIXED" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_CHECK_LABAL" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_FIX" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_RELEASED" Type="WSTRING"/>
+		</InputVars>
+		<OutputVars>
+			<VarDeclaration Name="Status" Type="WSTRING" Comment="Output event qualifier" />
+		</OutputVars>
+	</InterfaceList>
+	<FBNetwork>
+		<FB Name="SS5_ifb_Raiser_n_Flipper_Instance" Type="SS5_ifb_Raiser_n_Flipper" x="1700" y="700">
+		</FB>
+		<FB Name="SUBSCRIBE_START_S5" Type="SUBSCRIBE_1" x="500" y="100">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="SUBSCRIBE_LABEL_CHECK_DONE" Type="SUBSCRIBE_0" x="1700" y="100">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="SUBSCRIBE_FIXED" Type="SUBSCRIBE_0" x="2900" y="100">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_CHECK_LABAL" Type="PUBLISH_1" x="500" y="1300">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_FIX" Type="PUBLISH_0" x="1700" y="1300">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_RELEASED" Type="PUBLISH_0" x="2900" y="1300">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<EventConnections>
+			<Connection Source="INIT" Destination="SUBSCRIBE_START_S5.INIT" dx1="300"/>
+			<Connection Source="SUBSCRIBE_START_S5.INITO" Destination="SUBSCRIBE_LABEL_CHECK_DONE.INIT" dx1="300"/>
+			<Connection Source="SUBSCRIBE_LABEL_CHECK_DONE.INITO" Destination="SUBSCRIBE_FIXED.INIT" dx1="300"/>
+			<Connection Source="SUBSCRIBE_FIXED.INITO" Destination="PUBLISH_CHECK_LABAL.INIT" dx1="300"/>
+			<Connection Source="PUBLISH_CHECK_LABAL.INITO" Destination="PUBLISH_FIX.INIT" dx1="300"/>
+			<Connection Source="PUBLISH_FIX.INITO" Destination="PUBLISH_RELEASED.INIT" dx1="300"/>
+			<Connection Source="PUBLISH_RELEASED.INITO" Destination="INITO" dx1="300"/>
+			<Connection Source="SUBSCRIBE_START_S5.IND" Destination="SS5_ifb_Raiser_n_Flipper_Instance.START_S5" dx1="300"/>
+			<Connection Source="SUBSCRIBE_LABEL_CHECK_DONE.IND" Destination="SS5_ifb_Raiser_n_Flipper_Instance.LABEL_CHECK_DONE" dx1="300"/>
+			<Connection Source="SUBSCRIBE_FIXED.IND" Destination="SS5_ifb_Raiser_n_Flipper_Instance.FIXED" dx1="300"/>
+			<Connection Source="SS5_ifb_Raiser_n_Flipper_Instance.CHECK_LABAL" Destination="PUBLISH_CHECK_LABAL.REQ" dx1="300"/>
+			<Connection Source="SS5_ifb_Raiser_n_Flipper_Instance.FIX" Destination="PUBLISH_FIX.REQ" dx1="300"/>
+			<Connection Source="SS5_ifb_Raiser_n_Flipper_Instance.RELEASED" Destination="PUBLISH_RELEASED.REQ" dx1="300"/>
+			<Connection Source="PUBLISH_CHECK_LABAL.CNF" Destination="DONE" dx1="300"/>
+			<Connection Source="PUBLISH_FIX.CNF" Destination="DONE" dx1="300"/>
+			<Connection Source="PUBLISH_RELEASED.CNF" Destination="DONE" dx1="300"/>
+		</EventConnections>
+		<DataConnections>
+			<Connection Source="ID_SUB_START_S5" Destination="SUBSCRIBE_START_S5.ID" dx1="300"/>
+			<Connection Source="ID_SUB_LABEL_CHECK_DONE" Destination="SUBSCRIBE_LABEL_CHECK_DONE.ID" dx1="300"/>
+			<Connection Source="ID_SUB_FIXED" Destination="SUBSCRIBE_FIXED.ID" dx1="300"/>
+			<Connection Source="ID_PUB_CHECK_LABAL" Destination="PUBLISH_CHECK_LABAL.ID" dx1="300"/>
+			<Connection Source="ID_PUB_FIX" Destination="PUBLISH_FIX.ID" dx1="300"/>
+			<Connection Source="ID_PUB_RELEASED" Destination="PUBLISH_RELEASED.ID" dx1="300"/>
+			<Connection Source="SUBSCRIBE_START_S5.RD_1" Destination="SS5_ifb_Raiser_n_Flipper_Instance.Label" dx1="300"/>
+			<Connection Source="SS5_ifb_Raiser_n_Flipper_Instance.Label_o" Destination="PUBLISH_CHECK_LABAL.SD_1" dx1="300"/>
+		</DataConnections>
+	</FBNetwork>
+</FBType>

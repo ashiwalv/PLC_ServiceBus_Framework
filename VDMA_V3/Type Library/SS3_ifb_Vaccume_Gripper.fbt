@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS3_ifb_Vaccume_Gripper" Comment="Basic FB with empty ECC" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="AK121668" Date="2021-08-23">
+	</VersionInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="Reached_Pickup_Position" Type="Event">
+			</Event>
+			<Event Name="REACHED_DROP_POSITION" Type="Event">
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="PICKED_CAP" Type="Event">
+			</Event>
+			<Event Name="RELEASED_CAP" Type="Event">
+			</Event>
+		</EventOutputs>
+		<Plugs>
+			<AdapterDeclaration Name="Timer" Type="ARTimeOut"/>
+		</Plugs>
+	</InterfaceList>
+	<BasicFB>
+		<ECC>
+			<ECState Name="START" Comment="Initial State"  x="540" y="420">
+			</ECState>
+			<ECState Name="s_PICK" x="2040" y="340">
+				<ECAction Algorithm="alg_move_init"/>
+				<ECAction Algorithm="alg_move" Output="Timer.START"/>
+			</ECState>
+			<ECState Name="s_PICK_DONE" x="2000" y="1100">
+				<ECAction Algorithm="alg_move_Done" Output="PICKED_CAP"/>
+			</ECState>
+			<ECState Name="S_RELEASE" x="1233.33" y="1666.67">
+				<ECAction Algorithm="alg_move_init"/>
+				<ECAction Algorithm="alg_move" Output="Timer.START"/>
+			</ECState>
+			<ECState Name="s_RELEASE_DONE" x="300" y="2300">
+				<ECAction Algorithm="alg_move_Done" Output="RELEASED_CAP"/>
+			</ECState>
+			<ECTransition Source="s_PICK_DONE" Destination="START" Condition="1" Comment="" x="1520" y="920"/>
+			<ECTransition Source="START" Destination="s_PICK" Condition="Reached_Pickup_Position" Comment="" x="1460" y="460"/>
+			<ECTransition Source="s_PICK" Destination="s_PICK_DONE" Condition="Timer.TimeOut" Comment="" x="2260" y="806.67"/>
+			<ECTransition Source="s_RELEASE_DONE" Destination="START" Condition="1" Comment="" x="320" y="1500"/>
+			<ECTransition Source="START" Destination="S_RELEASE" Condition="REACHED_DROP_POSITION" Comment="" x="1093.33" y="1100"/>
+			<ECTransition Source="S_RELEASE" Destination="s_RELEASE_DONE" Condition="Timer.TimeOut" Comment="" x="1100" y="2026.67"/>
+		</ECC>
+		<Algorithm Name="alg_move_init">
+			<ST><![CDATA[ALGORITHM alg_move_init
+Timer.DT := T#3s;
+END_ALGORITHM]]></ST>
+		</Algorithm>
+		<Algorithm Name="alg_move">
+			<ST><![CDATA[
+
+ALGORITHM alg_move
+END_ALGORITHM]]></ST>
+		</Algorithm>
+		<Algorithm Name="alg_move_Done">
+			<ST><![CDATA[
+
+ALGORITHM alg_move_Done
+END_ALGORITHM
+
+]]></ST>
+		</Algorithm>
+	</BasicFB>
+</FBType>

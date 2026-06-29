@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS3_ifb_Bunker" Comment="Basic FB with empty ECC" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="AK121668" Date="2021-08-03">
+	</VersionInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="START_BUNKER" Type="Event" Comment="start feeding bunker" >
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="MORE_CAPS_AVAILABLE" Type="Event" Comment="feeding is DONE" >
+				<With Var="Status"/>
+			</Event>
+		</EventOutputs>
+		<OutputVars>
+			<VarDeclaration Name="Status" Type="WSTRING" Comment="Current Status of Bunker" />
+		</OutputVars>
+		<Plugs>
+			<AdapterDeclaration Name="Timer" Type="ARTimeOut"/>
+		</Plugs>
+	</InterfaceList>
+	<BasicFB>
+		<ECC>
+			<ECState Name="START" Comment="Initial State"  x="300" y="800">
+			</ECState>
+			<ECState Name="s_feed" x="2300" y="900">
+				<ECAction Algorithm="alg_feeding" Output="Timer.START"/>
+			</ECState>
+			<ECState Name="State" x="1740" y="1660">
+				<ECAction Algorithm="alg_feed_done" Output="MORE_CAPS_AVAILABLE"/>
+			</ECState>
+			<ECState Name="s_init" x="1280" y="260">
+				<ECAction Algorithm="alg_init"/>
+			</ECState>
+			<ECTransition Source="s_feed" Destination="State" Condition="Timer.TimeOut" Comment="" x="2360" y="1320"/>
+			<ECTransition Source="State" Destination="START" Condition="1" Comment="" x="886.67" y="1440"/>
+			<ECTransition Source="START" Destination="s_init" Condition="START_BUNKER" Comment="" x="826.67" y="586.67"/>
+			<ECTransition Source="s_init" Destination="s_feed" Condition="1" Comment="" x="2220" y="560"/>
+		</ECC>
+		<Algorithm Name="alg_init">
+			<ST><![CDATA[ALGORITHM alg_init
+Timer.DT := T#5s;
+Status := WSTRING#"init mode";
+END_ALGORITHM]]></ST>
+		</Algorithm>
+		<Algorithm Name="alg_feeding">
+			<ST><![CDATA[
+
+ALGORITHM alg_feeding
+Status := WSTRING#"feeding now";
+END_ALGORITHM]]></ST>
+		</Algorithm>
+		<Algorithm Name="alg_feed_done">
+			<ST><![CDATA[
+
+ALGORITHM alg_feed_done
+Status := WSTRING#"feeding Done";
+END_ALGORITHM]]></ST>
+		</Algorithm>
+		<Algorithm Name="alg_no_cap_alarm">
+			<ST><![CDATA[
+
+ALGORITHM alg_no_cap_alarm
+Status := WSTRING#"Caps not available";
+END_ALGORITHM
+
+]]></ST>
+		</Algorithm>
+	</BasicFB>
+</FBType>

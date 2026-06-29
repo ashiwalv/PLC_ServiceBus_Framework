@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS0_ifb_magzine" Comment="Basic FB with empty ECC" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="DEVIASH" Date="2025-04-16">
+	</VersionInfo>
+	<CompilerInfo>
+	</CompilerInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="ORDER_PLACED" Type="Event">
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="TOOL_MAGZINE_OUT" Type="Event">
+			</Event>
+		</EventOutputs>
+		<Plugs>
+			<AdapterDeclaration Name="PLUG1" Type="ATimeOut"/>
+		</Plugs>
+	</InterfaceList>
+	<BasicFB>
+		<ECC>
+			<ECState Name="START" Comment="Initial State"  x="550" y="425">
+			</ECState>
+			<ECState Name="State_2" x="2133.33" y="133.33">
+				<ECAction Algorithm="StartTimer" Output="PLUG1.START"/>
+			</ECState>
+			<ECState Name="State_1" x="1600" y="1466.67">
+				<ECAction Output="TOOL_MAGZINE_OUT"/>
+			</ECState>
+			<ECTransition Source="START" Destination="State_2" Condition="ORDER_PLACED" Comment="" x="1420" y="453.33"/>
+			<ECTransition Source="State_2" Destination="State_1" Condition="PLUG1.TimeOut" Comment="" x="2020" y="1173.33"/>
+			<ECTransition Source="State_1" Destination="START" Condition="1" Comment="" x="1146.67" y="1340"/>
+		</ECC>
+		<Algorithm Name="StartTimer">
+			<ST><![CDATA[ALGORITHM StartTimer
+PLUG1.DT := T#12s;
+END_ALGORITHM
+
+]]></ST>
+		</Algorithm>
+	</BasicFB>
+</FBType>

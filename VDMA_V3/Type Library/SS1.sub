@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SubAppType Name="SS1" Comment="Subapplication Type" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="DEVIASH" Date="2024-07-25">
+	</VersionInfo>
+	<SubAppInterfaceList>
+		<SubAppEventInputs>
+			<SubAppEvent Name="WP_READY_To_PICKUP" Type="Event" Comment="Initialization Request" >
+			</SubAppEvent>
+			<SubAppEvent Name="BASE_FIXED" Type="Event">
+			</SubAppEvent>
+		</SubAppEventInputs>
+		<SubAppEventOutputs>
+			<SubAppEvent Name="BASE_MOVED" Type="Event" Comment="Initialization Confirm" >
+			</SubAppEvent>
+			<SubAppEvent Name="BEARING_MOVED" Type="Event">
+			</SubAppEvent>
+		</SubAppEventOutputs>
+	</SubAppInterfaceList>
+	<SubAppNetwork>
+		<FB Name="E_REND" Type="E_REND" x="-2300" y="-800">
+		</FB>
+		<FB Name="SS1_SS2_ifb_RobotWithTimer" Type="SS1_SS2_ifb_RobotWithTimer" x="-1500" y="-2400">
+		</FB>
+		<FB Name="SS1_SS2_ifb_RobotWithTimer_1" Type="SS1_SS2_ifb_RobotWithTimer" x="-900" y="-900">
+		</FB>
+		<FB Name="SS1_SS2_ifb_RobotWithTimer_2" Type="SS1_SS2_ifb_RobotWithTimer" x="700" y="-1000">
+		</FB>
+		<FB Name="SS1_SS2_ifb_RobotWithTimer_3" Type="SS1_SS2_ifb_RobotWithTimer" x="2500" y="-1000">
+		</FB>
+		<FB Name="SS1_SS2_ifb_RobotWithTimer_4" Type="SS1_SS2_ifb_RobotWithTimer" x="4400" y="-1100">
+		</FB>
+		<EventConnections>
+			<Connection Source="WP_READY_To_PICKUP" Destination="SS1_SS2_ifb_RobotWithTimer.WP_READY" dx1="2406.67"/>
+			<Connection Source="SS1_SS2_ifb_RobotWithTimer_1.WP_PLACED" Destination="SS1_SS2_ifb_RobotWithTimer_2.WP_READY" dx1="220"/>
+			<Connection Source="SS1_SS2_ifb_RobotWithTimer_2.WP_PLACED" Destination="SS1_SS2_ifb_RobotWithTimer_3.WP_READY"/>
+			<Connection Source="SS1_SS2_ifb_RobotWithTimer_3.WP_PLACED" Destination="SS1_SS2_ifb_RobotWithTimer_4.WP_READY" dx1="326.67"/>
+			<Connection Source="BASE_FIXED" Destination="E_REND.EI1" dx1="1473.33"/>
+			<Connection Source="SS1_SS2_ifb_RobotWithTimer.WP_PLACED" Destination="E_REND.EI2" dx1="80" dx2="80" dy="600"/>
+			<Connection Source="E_REND.EO" Destination="SS1_SS2_ifb_RobotWithTimer_1.WP_READY" dx1="673.33"/>
+			<Connection Source="SS1_SS2_ifb_RobotWithTimer_4.WP_PLACED" Destination="BASE_MOVED" dx1="1840"/>
+			<Connection Source="SS1_SS2_ifb_RobotWithTimer.WP_PLACED" Destination="BEARING_MOVED" dx1="4440"/>
+		</EventConnections>
+	</SubAppNetwork>
+</SubAppType>

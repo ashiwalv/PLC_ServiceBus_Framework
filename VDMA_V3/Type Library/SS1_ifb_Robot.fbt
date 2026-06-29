@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS1_ifb_Robot" Comment="Basic FB with empty ECC" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="DEVIASH" Date="2024-07-24">
+	</VersionInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="WPs_READY" Type="Event">
+				<With Var="Pick_X"/>
+				<With Var="Pick_Y"/>
+				<With Var="Pick_Z"/>
+				<With Var="Destination_X"/>
+				<With Var="Destination_Y"/>
+				<With Var="Destination_Z"/>
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="WPs_PLACED" Type="Event">
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="Pick_X" Type="REAL" InitialValue="10.0"/>
+			<VarDeclaration Name="Pick_Y" Type="REAL" InitialValue="10.0"/>
+			<VarDeclaration Name="Pick_Z" Type="REAL" InitialValue="10.0"/>
+			<VarDeclaration Name="Destination_X" Type="REAL" InitialValue="10.0"/>
+			<VarDeclaration Name="Destination_Y" Type="REAL" InitialValue="10.0"/>
+			<VarDeclaration Name="Destination_Z" Type="REAL" InitialValue="10.0"/>
+		</InputVars>
+		<Plugs>
+			<AdapterDeclaration Name="PLUG1" Type="ATimeOut"/>
+		</Plugs>
+	</InterfaceList>
+	<BasicFB>
+		<ECC>
+			<ECState Name="START" Comment="Initial State"  x="546.67" y="420">
+			</ECState>
+			<ECState Name="Go2Pickup_Pos" x="1720" y="366.67">
+				<ECAction Algorithm="alg_TimerSetup" Output="PLUG1.START"/>
+			</ECState>
+			<ECState Name="Go2Drop_Pos" x="2340" y="1946.67">
+				<ECAction Algorithm="alg_TimerSetup" Output="WPs_PLACED"/>
+			</ECState>
+			<ECTransition Source="START" Destination="Go2Pickup_Pos" Condition="WPs_READY" Comment="" x="1360" y="460"/>
+			<ECTransition Source="Go2Pickup_Pos" Destination="Go2Drop_Pos" Condition="1" Comment="" x="2393.33" y="1246.67"/>
+			<ECTransition Source="Go2Drop_Pos" Destination="START" Condition="PLUG1.TimeOut" Comment="" x="1473.33" y="1266.67"/>
+		</ECC>
+		<Algorithm Name="alg_TimerSetup">
+			<ST><![CDATA[ALGORITHM alg_TimerSetup
+PLUG1.DT = T#5s;
+END_ALGORITHM
+
+]]></ST>
+		</Algorithm>
+	</BasicFB>
+</FBType>

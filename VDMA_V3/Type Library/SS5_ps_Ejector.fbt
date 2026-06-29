@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS5_ps_Ejector" Comment="Composite FB wrapping other FBs" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="PS_Transformer_for_Unknown" Date="2025-08-25">
+	</VersionInfo>
+	<CompilerInfo>
+	</CompilerInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="INIT" Type="Event" Comment="Initialization Request" >
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="INITO" Type="Event" Comment="Initialization Confirm" >
+				<With Var="Status"/>
+			</Event>
+			<Event Name="DONE" Type="Event" Comment="Execution Confirmation" >
+				<With Var="Status"/>
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="ID_SUB_FIX" Type="WSTRING"/>
+			<VarDeclaration Name="ID_SUB_RELEASED" Type="WSTRING"/>
+			<VarDeclaration Name="ID_SUB_CHECK_SPEED_DONE" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_S5_DONE" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_CHECK_SPEED" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_FIXED" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_START_AIR_NOZZLE" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_STOP_AIR_NOZZLE" Type="WSTRING"/>
+		</InputVars>
+		<OutputVars>
+			<VarDeclaration Name="Status" Type="WSTRING" Comment="Output event qualifier" />
+		</OutputVars>
+	</InterfaceList>
+	<FBNetwork>
+		<FB Name="SS5_Ejector_Instance" Type="SS5_Ejector" x="2900" y="700">
+		</FB>
+		<FB Name="SUBSCRIBE_FIX" Type="SUBSCRIBE_0" x="500" y="100">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="SUBSCRIBE_RELEASED" Type="SUBSCRIBE_0" x="1700" y="100">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="SUBSCRIBE_CHECK_SPEED_DONE" Type="SUBSCRIBE_0" x="2900" y="100">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_S5_DONE" Type="PUBLISH_0" x="500" y="1300">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_CHECK_SPEED" Type="PUBLISH_0" x="1700" y="1300">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_FIXED" Type="PUBLISH_0" x="2900" y="1300">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_START_AIR_NOZZLE" Type="PUBLISH_0" x="4100" y="1300">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_STOP_AIR_NOZZLE" Type="PUBLISH_0" x="5300" y="1300">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<EventConnections>
+			<Connection Source="INIT" Destination="SUBSCRIBE_FIX.INIT" dx1="300"/>
+			<Connection Source="SUBSCRIBE_FIX.INITO" Destination="SUBSCRIBE_RELEASED.INIT" dx1="300"/>
+			<Connection Source="SUBSCRIBE_RELEASED.INITO" Destination="SUBSCRIBE_CHECK_SPEED_DONE.INIT" dx1="300"/>
+			<Connection Source="SUBSCRIBE_CHECK_SPEED_DONE.INITO" Destination="PUBLISH_S5_DONE.INIT" dx1="300"/>
+			<Connection Source="PUBLISH_S5_DONE.INITO" Destination="PUBLISH_CHECK_SPEED.INIT" dx1="300"/>
+			<Connection Source="PUBLISH_CHECK_SPEED.INITO" Destination="PUBLISH_FIXED.INIT" dx1="300"/>
+			<Connection Source="PUBLISH_FIXED.INITO" Destination="PUBLISH_START_AIR_NOZZLE.INIT" dx1="300"/>
+			<Connection Source="PUBLISH_START_AIR_NOZZLE.INITO" Destination="PUBLISH_STOP_AIR_NOZZLE.INIT" dx1="300"/>
+			<Connection Source="PUBLISH_STOP_AIR_NOZZLE.INITO" Destination="INITO" dx1="300"/>
+			<Connection Source="SUBSCRIBE_FIX.IND" Destination="SS5_Ejector_Instance.FIX" dx1="300"/>
+			<Connection Source="SUBSCRIBE_RELEASED.IND" Destination="SS5_Ejector_Instance.RELEASED" dx1="300"/>
+			<Connection Source="SUBSCRIBE_CHECK_SPEED_DONE.IND" Destination="SS5_Ejector_Instance.CHECK_SPEED_DONE" dx1="300"/>
+			<Connection Source="SS5_Ejector_Instance.S5_DONE" Destination="PUBLISH_S5_DONE.REQ" dx1="300"/>
+			<Connection Source="SS5_Ejector_Instance.CHECK_SPEED" Destination="PUBLISH_CHECK_SPEED.REQ" dx1="300"/>
+			<Connection Source="SS5_Ejector_Instance.FIXED" Destination="PUBLISH_FIXED.REQ" dx1="300"/>
+			<Connection Source="SS5_Ejector_Instance.START_AIR_NOZZLE" Destination="PUBLISH_START_AIR_NOZZLE.REQ" dx1="300"/>
+			<Connection Source="SS5_Ejector_Instance.STOP_AIR_NOZZLE" Destination="PUBLISH_STOP_AIR_NOZZLE.REQ" dx1="300"/>
+			<Connection Source="PUBLISH_S5_DONE.CNF" Destination="DONE" dx1="300"/>
+			<Connection Source="PUBLISH_CHECK_SPEED.CNF" Destination="DONE" dx1="300"/>
+			<Connection Source="PUBLISH_FIXED.CNF" Destination="DONE" dx1="300"/>
+			<Connection Source="PUBLISH_START_AIR_NOZZLE.CNF" Destination="DONE" dx1="300"/>
+			<Connection Source="PUBLISH_STOP_AIR_NOZZLE.CNF" Destination="DONE" dx1="300"/>
+		</EventConnections>
+		<DataConnections>
+			<Connection Source="ID_SUB_FIX" Destination="SUBSCRIBE_FIX.ID" dx1="300"/>
+			<Connection Source="ID_SUB_RELEASED" Destination="SUBSCRIBE_RELEASED.ID" dx1="300"/>
+			<Connection Source="ID_SUB_CHECK_SPEED_DONE" Destination="SUBSCRIBE_CHECK_SPEED_DONE.ID" dx1="300"/>
+			<Connection Source="ID_PUB_S5_DONE" Destination="PUBLISH_S5_DONE.ID" dx1="300"/>
+			<Connection Source="ID_PUB_CHECK_SPEED" Destination="PUBLISH_CHECK_SPEED.ID" dx1="300"/>
+			<Connection Source="ID_PUB_FIXED" Destination="PUBLISH_FIXED.ID" dx1="300"/>
+			<Connection Source="ID_PUB_START_AIR_NOZZLE" Destination="PUBLISH_START_AIR_NOZZLE.ID" dx1="300"/>
+			<Connection Source="ID_PUB_STOP_AIR_NOZZLE" Destination="PUBLISH_STOP_AIR_NOZZLE.ID" dx1="300"/>
+		</DataConnections>
+	</FBNetwork>
+</FBType>

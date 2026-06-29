@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="SS5a_ps_Camera" Comment="Composite FB wrapping other FBs" >
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="PS_Transformer_for_Unknown" Date="2025-08-26">
+	</VersionInfo>
+	<CompilerInfo>
+	</CompilerInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="INIT" Type="Event" Comment="Initialization Request" >
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="INITO" Type="Event" Comment="Initialization Confirm" >
+				<With Var="Status"/>
+			</Event>
+			<Event Name="DONE" Type="Event" Comment="Execution Confirmation" >
+				<With Var="Status"/>
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="ID_SUB_CHECK_SPEED" Type="WSTRING"/>
+			<VarDeclaration Name="ID_PUB_CHECK_SPEED_DONE" Type="WSTRING"/>
+		</InputVars>
+		<OutputVars>
+			<VarDeclaration Name="Status" Type="WSTRING" Comment="Output event qualifier" />
+		</OutputVars>
+	</InterfaceList>
+	<FBNetwork>
+		<FB Name="SS5a_Camera_Instance" Type="SS5a_Camera" x="500" y="700">
+		</FB>
+		<FB Name="SUBSCRIBE_CHECK_SPEED" Type="SUBSCRIBE_0" x="500" y="100">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<FB Name="PUBLISH_CHECK_SPEED_DONE" Type="PUBLISH_0" x="500" y="1300">
+			<Parameter Name="QI" Value="1"/>
+		</FB>
+		<EventConnections>
+			<Connection Source="INIT" Destination="SUBSCRIBE_CHECK_SPEED.INIT" dx1="300"/>
+			<Connection Source="SUBSCRIBE_CHECK_SPEED.INITO" Destination="PUBLISH_CHECK_SPEED_DONE.INIT" dx1="300"/>
+			<Connection Source="PUBLISH_CHECK_SPEED_DONE.INITO" Destination="INITO" dx1="300"/>
+			<Connection Source="SUBSCRIBE_CHECK_SPEED.IND" Destination="SS5a_Camera_Instance.CHECK_SPEED" dx1="300"/>
+			<Connection Source="SS5a_Camera_Instance.CHECK_SPEED_DONE" Destination="PUBLISH_CHECK_SPEED_DONE.REQ" dx1="300"/>
+			<Connection Source="PUBLISH_CHECK_SPEED_DONE.CNF" Destination="DONE" dx1="300"/>
+		</EventConnections>
+		<DataConnections>
+			<Connection Source="ID_SUB_CHECK_SPEED" Destination="SUBSCRIBE_CHECK_SPEED.ID" dx1="300"/>
+			<Connection Source="ID_PUB_CHECK_SPEED_DONE" Destination="PUBLISH_CHECK_SPEED_DONE.ID" dx1="300"/>
+		</DataConnections>
+	</FBNetwork>
+</FBType>
